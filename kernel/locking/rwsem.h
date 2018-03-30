@@ -37,6 +37,12 @@ struct rwsem_waiter {
 	enum rwsem_waiter_type type;
 };
 
+#ifdef CONFIG_DEBUG_RWSEMS
+# define DEBUG_RWSEMS_WARN_ON(c)	DEBUG_LOCKS_WARN_ON(c)
+#else
+# define DEBUG_RWSEMS_WARN_ON(c)
+#endif
+
 #ifdef CONFIG_RWSEM_SPIN_ON_OWNER
 /*
  * All writes to owner are protected by WRITE_ONCE() to make sure that
