@@ -357,7 +357,7 @@ static int ion_system_heap_allocate(struct ion_heap *heap,
 #endif /* BOOSTPOOL_DEBUG */
 #endif /* CONFIG_OPLUS_ION_BOOSTPOOL */
 
-	if (size / PAGE_SIZE > totalram_pages / 2)
+	if (size / PAGE_SIZE > totalram_pages() / 2)
 		return -ENOMEM;
 
 	if (ion_heap_is_system_heap_type(buffer->heap->type) &&
@@ -964,7 +964,7 @@ struct ion_heap *ion_system_heap_create(struct ion_platform_heap *data)
 
 			/* on low memory target, we should not set 128Mib on camera pool. */
 			/* TODO set by total ram pages */
-			if (totalram_pages > (SZ_4G >> PAGE_SHIFT)) {
+			if (totalram_pages() > (SZ_4G >> PAGE_SHIFT)) {
 				cam_sz = 128 * 256;
 				uncached_sz = 64 * 256;
 			}
