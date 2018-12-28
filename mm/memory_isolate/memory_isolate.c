@@ -56,13 +56,13 @@ static int pageblock_is_reserved(unsigned long start_pfn, unsigned long end_pfn)
 {
 	int index;
 
-	if (totalram_pages <= TOTALRAM_2GB)
+	if (totalram_pages() <= TOTALRAM_2GB)
 		index = TOTALRAM_2GB_INDEX;
-	else if (totalram_pages <= TOTALRAM_3GB)
+	else if (totalram_pages() <= TOTALRAM_3GB)
 		index = TOTALRAM_3GB_INDEX;
-	else if (totalram_pages <= TOTALRAM_4GB)
+	else if (totalram_pages() <= TOTALRAM_4GB)
 		index = TOTALRAM_4GB_INDEX;
-	else if (totalram_pages <= TOTALRAM_6GB)
+	else if (totalram_pages() <= TOTALRAM_6GB)
 		index = TOTALRAM_6GB_INDEX;
 	else
 		index = TOTALRAM_8GB_INDEX;

@@ -296,7 +296,15 @@ static int ion_system_heap_allocate(struct ion_heap *heap,
 	unsigned int sz;
 	int vmid = get_secure_vmid(buffer->flags);
 
-	if (size / PAGE_SIZE > totalram_pages / 2)
+#ifdef CONFIG_OPLUS_ION_BOOSTPOOL
+	struct ion_boost_pool *boost_pool = has_boost_pool(sys_heap, buffer);
+#ifdef BOOSTPOOL_DEBUG
+	int boostpool_order[3] = {0};
+	unsigned long alloc_start = jiffies;
+#endif /* BOOSTPOOL_DEBUG */
+#endif /* CONFIG_OPLUS_ION_BOOSTPOOL */
+
+	if (size / PAGE_SIZE > totalram_pages() / 2)
 		return -ENOMEM;
 
 	if (ion_heap_is_system_heap_type(buffer->heap->type) &&
@@ -656,6 +664,42 @@ struct ion_heap *ion_system_heap_create(struct ion_platform_heap *data)
 			goto destroy_pools;
 		}
 	}
+
+#ifdef CONFIG_OPLUS_ION_BOOSTPOOL
+	if (kcrit_scene_init()) {
+		boost_root_dir = proc_mkdir("boost_pool", NULL);
+		if (!IS_ERR_OR_NULL(boost_root_dir)) {
+			unsigned long cam_sz = 32 * 256, uncached_sz = 32 * 256;
+
+			/* on low memory target, we should not set 128Mib on camera pool. */
+			/* TODO set by total ram pages */
+			if (totalram_pages() > (SZ_4G >> PAGE_SHIFT)) {
+				cam_sz = 128 * 256;
+				uncached_sz = 64 * 256;
+			}
+
+			heap->uncached_boost_pool = boost_pool_create(heap,
+								      0,
+								      uncached_sz,
+								      boost_root_dir,
+								      "ion_uncached");
+			if (!heap->uncached_boost_pool)
+				pr_err("%s: create boost_pool ion_uncached failed!\n",
+				       __func__);
+
+			/* on low memory target, we should not set 128Mib on camera pool. */
+			/* TODO set by total ram pages */
+			heap->cam_pool = boost_pool_create(heap, ION_FLAG_CACHED,
+							   cam_sz,
+							   boost_root_dir, "camera");
+			if (!heap->cam_pool)
+				pr_err("%s: create boost_pool camera failed!\n",
+				       __func__);
+		}
+	} else {
+		pr_err("boostpool kcrit_scene init failed.\n");
+	}
+#endif /* CONFIG_OPLUS_ION_BOOSTPOOL */
 
 	mutex_init(&heap->split_page_mutex);
 
