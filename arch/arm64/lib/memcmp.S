@@ -57,7 +57,7 @@
    accesses.  */
 
 .p2align 6
-WEAK(memcmp)
+SYM_FUNC_START_WEAK_PI(memcmp)
 	subs	limit, limit, 8
 	b.lo	.Lless8
 
@@ -128,4 +128,4 @@ WEAK(memcmp)
 	b.eq	.Lbyte_loop
 	sub	result, data1w, data2w
 	ret
-ENDPIPROC(memcmp)
+SYM_FUNC_END_PI(memcmp)
