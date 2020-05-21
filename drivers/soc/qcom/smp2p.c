@@ -26,7 +26,6 @@
 #include <linux/soc/qcom/smem.h>
 #include <linux/soc/qcom/smem_state.h>
 #include <linux/spinlock.h>
-#include <linux/pm_wakeup.h>
 
 #include <linux/ipc_logging.h>
 
@@ -295,14 +294,6 @@ static void qcom_smp2p_notify_in(struct qcom_smp2p *smp2p)
 	}
 }
 
-static irqreturn_t qcom_smp2p_isr(int irq, void *data)
-{
-	struct qcom_smp2p *smp2p = data;
-
-	__pm_stay_awake(smp2p->ws);
-	return IRQ_WAKE_THREAD;
-}
-
 /**
  * qcom_smp2p_intr() - interrupt handler for incoming notifications
  * @irq:	unused
@@ -327,7 +318,7 @@ static irqreturn_t qcom_smp2p_intr(int irq, void *data)
 		if (IS_ERR(in)) {
 			dev_err(smp2p->dev,
 				"Unable to acquire remote smp2p item\n");
-			goto out;
+			return IRQ_HANDLED;
 		}
 
 		smp2p->in = in;
@@ -346,8 +337,6 @@ static irqreturn_t qcom_smp2p_intr(int irq, void *data)
 			qcom_smp2p_do_ssr_ack(smp2p);
 	}
 
-out:
-	__pm_relax(smp2p->ws);
 	return IRQ_HANDLED;
 }
 
@@ -667,14 +656,13 @@ static int qcom_smp2p_probe(struct platform_device *pdev)
 	qcom_smp2p_kick(smp2p);
 
 	ret = devm_request_threaded_irq(&pdev->dev, smp2p->irq,
-					qcom_smp2p_isr, qcom_smp2p_intr,
-					IRQF_NO_SUSPEND | IRQF_ONESHOT,
+					NULL, qcom_smp2p_intr,
+					IRQF_ONESHOT,
 					"smp2p", (void *)smp2p);
 	if (ret) {
 		dev_err(&pdev->dev, "failed to request interrupt\n");
 		return 0;
 	}
-	enable_irq_wake(smp2p->irq);
 
 	return 0;
 
