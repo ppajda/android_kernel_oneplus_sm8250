@@ -1598,13 +1598,15 @@ static inline void unregister_sched_domain_sysctl(void)
 
 extern int newidle_balance(struct rq *this_rq, struct rq_flags *rf);
 
-#else
+extern void flush_smp_call_function_from_idle(void);
 
+#else /* !CONFIG_SMP: */
+static inline void flush_smp_call_function_from_idle(void) { }
 static inline void sched_ttwu_pending(void) { }
 
 static inline int newidle_balance(struct rq *this_rq, struct rq_flags *rf) { return 0; }
 
-#endif /* CONFIG_SMP */
+#endif
 
 #include "stats.h"
 #include "autogroup.h"
