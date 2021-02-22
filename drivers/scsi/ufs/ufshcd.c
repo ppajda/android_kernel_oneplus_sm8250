@@ -4079,7 +4079,6 @@ send_orig_cmd:
 		lrbp->cmd = NULL;
 		clear_bit_unlock(tag, &hba->lrb_in_use);
 		ufshcd_release_all(hba);
-		ufshcd_vops_pm_qos_req_end(hba, cmd->request, true);
 		goto out;
 	}
 
@@ -4088,7 +4087,6 @@ send_orig_cmd:
 		lrbp->cmd = NULL;
 		clear_bit_unlock(tag, &hba->lrb_in_use);
 		ufshcd_release_all(hba);
-		ufshcd_vops_pm_qos_req_end(hba, cmd->request, true);
 		goto out;
 	}
 
@@ -4119,7 +4117,6 @@ send_orig_cmd:
 		lrbp->cmd = NULL;
 		clear_bit_unlock(tag, &hba->lrb_in_use);
 		ufshcd_release_all(hba);
-		ufshcd_vops_pm_qos_req_end(hba, cmd->request, true);
 		dev_err(hba->dev, "%s: failed sending command, %d\n",
 							__func__, err);
 		err = DID_ERROR;
@@ -6884,15 +6881,7 @@ static void __ufshcd_transfer_req_compl(struct ufs_hba *hba,
 			/* Mark completed command as NULL in LRB */
 			lrbp->cmd = NULL;
 			hba->ufs_stats.clk_rel.ctx = XFR_REQ_COMPL;
-			if (cmd->request) {
-				/*
-				 * As we are accessing the "request" structure,
-				 * this must be called before calling
-				 * ->scsi_done() callback.
-				 */
-				ufshcd_vops_pm_qos_req_end(hba, cmd->request,
-					false);
-			}
+
 #ifdef OPLUS_FEATURE_UFS_SHOW_LATENCY
 /* add latency_hist node for ufs latency calculate in sysfs. */
 			if (cmd->request) {
@@ -7000,15 +6989,7 @@ void ufshcd_abort_outstanding_transfer_requests(struct ufs_hba *hba, int result)
 			update_req_stats(hba, lrbp);
 			/* Mark completed command as NULL in LRB */
 			lrbp->cmd = NULL;
-			if (cmd->request) {
-				/*
-				 * As we are accessing the "request" structure,
-				 * this must be called before calling
-				 * ->scsi_done() callback.
-				 */
-				ufshcd_vops_pm_qos_req_end(hba, cmd->request,
-					true);
-			}
+
 			clear_bit_unlock(index, &hba->lrb_in_use);
 
 			/*
