@@ -296,7 +296,10 @@ static const char *kgsl_sync_fence_driver_name(struct dma_fence *fence)
 
 static const char *kgsl_sync_timeline_name(struct dma_fence *fence)
 {
-	return "kgsl_sync_timeline";
+	struct kgsl_sync_fence *kfence = (struct kgsl_sync_fence *)fence;
+	struct kgsl_sync_timeline *ktimeline = kfence->parent;
+
+	return ktimeline->name;
 }
 
 int kgsl_sync_timeline_create(struct kgsl_context *context)
@@ -308,6 +311,10 @@ int kgsl_sync_timeline_create(struct kgsl_context *context)
 		return -ENOMEM;
 
 	kref_init(&ktimeline->kref);
+	ktimeline->name = kasprintf(GFP_KERNEL, "%s_%d-%.15s(%d)-%.15s(%d)",
+		context->device->name, context->id,
+		current->group_leader->comm, current->group_leader->pid,
+		current->comm, current->pid);
 
 	ktimeline->fence_context = dma_fence_context_alloc(1);
 	ktimeline->last_timestamp = 0;
@@ -357,6 +364,7 @@ static void kgsl_sync_timeline_destroy(struct kref *kref)
 	struct kgsl_sync_timeline *ktimeline =
 		container_of(kref, struct kgsl_sync_timeline, kref);
 
+	kfree(ktimeline->name);
 	kfree(ktimeline);
 }
 
@@ -394,7 +402,7 @@ static void kgsl_sync_fence_callback(struct dma_fence *fence,
 }
 
 struct kgsl_sync_fence_cb *kgsl_sync_fence_async_wait(int fd,
-	bool (*func)(void *priv), void *priv, struct event_fence_info *info_ptr)
+	bool (*func)(void *priv), void *priv)
 {
 	struct kgsl_sync_fence_cb *kcb;
 	struct dma_fence *fence;
