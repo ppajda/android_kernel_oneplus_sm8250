@@ -52,6 +52,7 @@ enum zram_pageflags {
 	ZRAM_UNDER_WB,	/* page is under writeback */
 	ZRAM_HUGE,	/* Incompressible page */
 	ZRAM_IDLE,	/* not accessed page since last idle marking */
+	ZRAM_DEDUPED,	/* Deduplicated with existing entry */
 #ifdef CONFIG_HYBRIDSWAP_ASYNC_COMPRESS
 	ZRAM_CACHED,   /* page is cached in async compress cache buffer */
 	ZRAM_CACHED_COMPRESS, /* page is under async compress */
@@ -62,6 +63,7 @@ enum zram_pageflags {
 	ZRAM_MCGID_CLEAR,
 	ZRAM_IN_BD, /* zram stored in back device */
 #endif
+
 	__NR_ZRAM_PAGEFLAGS,
 };
 
