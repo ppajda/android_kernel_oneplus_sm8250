@@ -171,7 +171,7 @@ int ipa3_deregister_intf(const char *name)
 	int result = -EINVAL;
 
 	if ((name == NULL) ||
-	    (strnlen(name, IPA_RESOURCE_NAME_MAX) == IPA_RESOURCE_NAME_MAX)) {
+	    (strlen(name) >= IPA_RESOURCE_NAME_MAX)) {
 		IPAERR_RL("invalid param name=%s\n", name);
 		return result;
 	}
@@ -216,8 +216,7 @@ int ipa3_query_intf(struct ipa_ioc_query_intf *lookup)
 	}
 
 	lookup->name[IPA_RESOURCE_NAME_MAX-1] = '\0';
-	if (strnlen(lookup->name, IPA_RESOURCE_NAME_MAX) ==
-			IPA_RESOURCE_NAME_MAX) {
+	if (strlen(lookup->name) >= IPA_RESOURCE_NAME_MAX) {
 		IPAERR_RL("Interface name too long. (%s)\n", lookup->name);
 		return result;
 	}
@@ -259,7 +258,7 @@ int ipa3_query_intf_tx_props(struct ipa_ioc_query_intf_tx_props *tx)
 	}
 
 	tx->name[IPA_RESOURCE_NAME_MAX-1] = '\0';
-	if (strnlen(tx->name, IPA_RESOURCE_NAME_MAX) == IPA_RESOURCE_NAME_MAX) {
+	if (strlen(tx->name) >= IPA_RESOURCE_NAME_MAX) {
 		IPAERR_RL("Interface name too long. (%s)\n", tx->name);
 		return result;
 	}
@@ -307,7 +306,7 @@ int ipa3_query_intf_rx_props(struct ipa_ioc_query_intf_rx_props *rx)
 	}
 
 	rx->name[IPA_RESOURCE_NAME_MAX-1] = '\0';
-	if (strnlen(rx->name, IPA_RESOURCE_NAME_MAX) == IPA_RESOURCE_NAME_MAX) {
+	if (strlen(rx->name) >= IPA_RESOURCE_NAME_MAX) {
 		IPAERR_RL("Interface name too long. (%s)\n", rx->name);
 		return result;
 	}
