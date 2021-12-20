@@ -663,12 +663,6 @@ static int qcom_smp2p_probe(struct platform_device *pdev)
 		}
 	}
 
-	smp2p->ws = wakeup_source_register(&pdev->dev, "smp2p");
-	if (!smp2p->ws) {
-		ret = -ENOMEM;
-		goto unwind_interfaces;
-	}
-
 	/* Kick the outgoing edge after allocating entries */
 	qcom_smp2p_kick(smp2p);
 
@@ -678,14 +672,12 @@ static int qcom_smp2p_probe(struct platform_device *pdev)
 					"smp2p", (void *)smp2p);
 	if (ret) {
 		dev_err(&pdev->dev, "failed to request interrupt\n");
-		goto unreg_ws;
+		return 0;
 	}
 	enable_irq_wake(smp2p->irq);
 
 	return 0;
 
-unreg_ws:
-	wakeup_source_unregister(smp2p->ws);
 
 unwind_interfaces:
 	list_for_each_entry(entry, &smp2p->inbound, node)
@@ -710,8 +702,6 @@ static int qcom_smp2p_remove(struct platform_device *pdev)
 {
 	struct qcom_smp2p *smp2p = platform_get_drvdata(pdev);
 	struct smp2p_entry *entry;
-
-	wakeup_source_unregister(smp2p->ws);
 
 	list_for_each_entry(entry, &smp2p->inbound, node)
 		irq_domain_remove(entry->domain);
