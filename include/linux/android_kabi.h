@@ -59,7 +59,7 @@
 #else
 
 #define _ANDROID_KABI_REPLACE(_orig, _new)			\
-	_new
+    _new
 
 #endif /* __GENKSYMS__ */
 

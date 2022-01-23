@@ -841,6 +841,7 @@ TRACE_EVENT(f2fs_lookup_end,
 		__field(dev_t,	dev)
 		__field(ino_t,	ino)
 		__string(name, dentry->d_name.name)
+>>>>>>> 12131b4229067f5c2da25a6983dd313a5d96f568
 		__field(nid_t,	cino)
 		__field(int,	err)
 	),

@@ -269,7 +269,8 @@ static const struct file_operations pm_qos_debug_fops = {
 
 static inline int pm_qos_set_value_for_cpus(struct pm_qos_request *new_req,
 					    struct pm_qos_constraints *c,
-					    unsigned long *cpus)
+					    unsigned long *cpus,
+					    bool dev_req)
 {
 	s32 qos_val[NR_CPUS] = {
 		[0 ... (NR_CPUS - 1)] = PM_QOS_CPU_DMA_LAT_DEFAULT_VALUE
@@ -296,6 +297,19 @@ static inline int pm_qos_set_value_for_cpus(struct pm_qos_request *new_req,
 	}
 
 	if (!changed)
+		return 0;
+
+	/*
+	 * pm_qos_set_value_for_cpus expects all c->list elements to be of type
+	 * pm_qos_request, however requests from device will contain elements
+	 * of type dev_pm_qos_request.
+	 * pm_qos_constraints.target_per_cpu can be accessed only for
+	 * constraints associated with one of the pm_qos_class and present in
+	 * pm_qos_array. Device requests are not associated with any of
+	 * pm_qos_class, therefore their target_per_cpu cannot be accessed. We
+	 * can safely skip updating target_per_cpu for device requests.
+	 */
+	if (dev_req)
 		return 0;
 
 	plist_for_each_entry(req, &c->list, node) {
@@ -333,7 +347,7 @@ static inline int pm_qos_set_value_for_cpus(struct pm_qos_request *new_req,
  *  otherwise.
  */
 int pm_qos_update_target(struct pm_qos_constraints *c, struct plist_node *node,
-			 enum pm_qos_req_action action, int value)
+			 enum pm_qos_req_action action, int value, bool dev_req)
 {
 	struct pm_qos_request *req = container_of(node, typeof(*req), node);
 	int prev_value, curr_value, new_value;
@@ -370,7 +384,7 @@ int pm_qos_update_target(struct pm_qos_constraints *c, struct plist_node *node,
 
 	curr_value = pm_qos_get_value(c);
 	pm_qos_set_value(c, curr_value);
-	ret = pm_qos_set_value_for_cpus(req, c, &cpus);
+	ret = pm_qos_set_value_for_cpus(req, c, &cpus, dev_req);
 
 	spin_unlock(&pm_qos_lock);
 
@@ -523,7 +537,7 @@ static void __pm_qos_update_request(struct pm_qos_request *req,
 	if (new_value != req->node.prio)
 		pm_qos_update_target(
 			pm_qos_array[req->pm_qos_class]->constraints,
-			&req->node, PM_QOS_UPDATE_REQ, new_value);
+			&req->node, PM_QOS_UPDATE_REQ, new_value, false);
 }
 
 #ifdef CONFIG_SMP
@@ -538,7 +552,7 @@ static void pm_qos_irq_release(struct kref *ref)
 
 	atomic_set(&req->cpus_affine, CPUMASK_ALL);
 	pm_qos_update_target(c, &req->node, PM_QOS_UPDATE_REQ,
-			c->default_value);
+			c->default_value, false);
 }
 
 static void pm_qos_irq_notify(struct irq_affinity_notify *notify,
@@ -550,7 +564,8 @@ static void pm_qos_irq_notify(struct irq_affinity_notify *notify,
 				pm_qos_array[req->pm_qos_class]->constraints;
 
 	atomic_set(&req->cpus_affine, *cpumask_bits(mask));
-	pm_qos_update_target(c, &req->node, PM_QOS_UPDATE_REQ, req->node.prio);
+	pm_qos_update_target(c, &req->node, PM_QOS_UPDATE_REQ, req->node.prio,
+			false);
 }
 #endif
 
@@ -621,7 +636,7 @@ void pm_qos_add_request(struct pm_qos_request *req,
 	req->pm_qos_class = pm_qos_class;
 	trace_pm_qos_add_request(pm_qos_class, value);
 	pm_qos_update_target(pm_qos_array[pm_qos_class]->constraints,
-			     &req->node, PM_QOS_ADD_REQ, value);
+			     &req->node, PM_QOS_ADD_REQ, value, false);
 
 #ifdef CONFIG_SMP
 	if (req->type == PM_QOS_REQ_AFFINE_IRQ &&
@@ -636,7 +651,7 @@ void pm_qos_add_request(struct pm_qos_request *req,
 			atomic_set(&req->cpus_affine, CPUMASK_ALL);
 			pm_qos_update_target(
 				pm_qos_array[pm_qos_class]->constraints,
-				&req->node, PM_QOS_UPDATE_REQ, value);
+				&req->node, PM_QOS_UPDATE_REQ, value, false);
 		}
 	}
 #endif
@@ -700,7 +715,7 @@ void pm_qos_remove_request(struct pm_qos_request *req)
 	trace_pm_qos_remove_request(req->pm_qos_class, PM_QOS_DEFAULT_VALUE);
 	pm_qos_update_target(pm_qos_array[req->pm_qos_class]->constraints,
 			     &req->node, PM_QOS_REMOVE_REQ,
-			     PM_QOS_DEFAULT_VALUE);
+			     PM_QOS_DEFAULT_VALUE, false);
 	memset(req, 0, sizeof(*req));
 }
 EXPORT_SYMBOL_GPL(pm_qos_remove_request);
