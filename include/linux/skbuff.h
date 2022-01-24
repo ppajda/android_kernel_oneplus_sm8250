@@ -740,10 +740,12 @@ struct sk_buff {
 				xmit_more:1,
 				pfmemalloc:1;
 
-	/* Fields enclosed in headers group are copied
+	/* fields enclosed in headers_start/headers_end are copied
 	 * using a single memcpy() in __copy_skb_header()
 	 */
-	struct_group(headers,
+	/* private: */
+	__u32			headers_start[0];
+	/* public: */
 
 /* if you move pkt_type around you also must adapt those constants */
 #ifdef __BIG_ENDIAN_BITFIELD
@@ -840,7 +842,9 @@ struct sk_buff {
 	__u16			network_header;
 	__u16			mac_header;
 
-	); /* end headers group */
+	/* private: */
+	__u32			headers_end[0];
+	/* public: */
 
 	ANDROID_KABI_RESERVE(1);
 	ANDROID_KABI_RESERVE(2);
