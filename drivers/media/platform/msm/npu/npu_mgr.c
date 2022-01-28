@@ -757,7 +757,7 @@ static int npu_reboot_handler(struct notifier_block *this,
 	struct npu_host_ctx *host_ctx =
 		container_of(this, struct npu_host_ctx, reboot_nb);
 
-	NPU_INFO("Device is rebooting with code %d\n", code);
+	NPU_INFO("Device is rebooting with code %ld\n", code);
 
 	if ((code == NOTIFY_DONE) || (code == SYS_POWER_OFF)) {
 		mutex_lock(&host_ctx->lock);

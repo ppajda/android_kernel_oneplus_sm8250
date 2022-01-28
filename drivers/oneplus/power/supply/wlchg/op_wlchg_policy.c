@@ -1639,7 +1639,7 @@ static long wlchg_dev_ioctl(struct file *filp, unsigned int cmd,
 			else
 			 	wlchg_rx_set_match_q_parm(g_rx_chip, chip->chg_param.fastchg_match_q_new);
 		}
-		chg_info("adapter arg is 0x%02x, adapter type is %d, adapter id is %d\n",
+		chg_info("adapter arg is 0x%02lx, adapter type is %d, adapter id is %d\n",
 			arg, chg_status->adapter_type, chg_status->adapter_id);
 		break;
 	case WLCHG_NOTIFY_ADAPTER_TYPE_ERR:
