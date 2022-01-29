@@ -717,6 +717,9 @@ KBUILD_CFLAGS	+= $(call cc-disable-warning, stringop-truncation)
 KBUILD_CFLAGS	+= $(call cc-disable-warning, unused-result)
 KBUILD_CFLAGS	+= $(call cc-disable-warning, unused-value)
 KBUILD_CFLAGS	+= $(call cc-disable-warning, zero-length-bounds)
+KBUILD_CFLAGS	+= $(call cc-disable-warning, infinite-recursion)
+KBUILD_CFLAGS	+= $(call cc-disable-warning, array-compare)
+KBUILD_CFLAGS	+= $(call cc-disable-warning, stringop-overread)
 
 ifeq ($(CONFIG_CC_OPTIMIZE_FOR_SIZE), y)
 KBUILD_CFLAGS   += -Os
