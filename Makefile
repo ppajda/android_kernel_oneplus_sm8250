@@ -789,11 +789,20 @@ KBUILD_CFLAGS += $(stackp-flags-y)
 
 ifeq ($(cc-name),clang)
 ifdef CONFIG_POLLY_CLANG
-KBUILD_CFLAGS += -mllvm -polly \
+KBUILD_CFLAGS	+= -mllvm -polly \
+		   -mllvm -polly-num-threads=0 \
+		   -mllvm -polly-scheduling=dynamic \
+		   -mllvm -polly-scheduling-chunksize=1 \
+		   -mllvm -polly-postopts=1 \
+                   -mllvm -polly-reschedule=1 \
 		   -mllvm -polly-run-dce \
 		   -mllvm -polly-run-inliner \
+		   -mllvm -polly-isl-arg=--no-schedule-serialize-sccs \
 		   -mllvm -polly-ast-use-context \
+		   -mllvm -polly-detect-keep-going \
+		   -mllvm -polly-position=before-vectorizer \
 		   -mllvm -polly-vectorizer=stripmine \
+		   -mllvm -polly-detect-profitability-min-per-loop-insts=40 \
 		   -mllvm -polly-invariant-load-hoisting
 endif
 ifneq ($(CROSS_COMPILE),)
