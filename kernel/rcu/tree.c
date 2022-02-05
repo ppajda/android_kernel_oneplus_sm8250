@@ -171,7 +171,11 @@ static void rcu_report_exp_rdp(struct rcu_state *rsp,
 static void sync_sched_exp_online_cleanup(int cpu);
 
 /* rcuc/rcub kthread realtime priority */
+#ifdef CONFIG_RCU_KTHREAD_PRIO
+static int kthread_prio = CONFIG_RCU_KTHREAD_PRIO;
+#else /* #ifdef CONFIG_RCU_KTHREAD_PRIO */
 static int kthread_prio = IS_ENABLED(CONFIG_RCU_BOOST) ? 1 : 0;
+#endif /* #else #ifdef CONFIG_RCU_KTHREAD_PRIO */
 module_param(kthread_prio, int, 0644);
 
 /* Delay in jiffies for grace-period initialization delays, debug only. */
@@ -1705,7 +1709,7 @@ static bool rcu_future_gp_cleanup(struct rcu_state *rsp, struct rcu_node *rnp)
 static void rcu_gp_kthread_wake(struct rcu_state *rsp)
 {
 	if ((current == rsp->gp_kthread &&
-	     !in_interrupt() && !in_serving_softirq()) ||
+	     !in_irq() && !in_serving_softirq()) ||
 	    !READ_ONCE(rsp->gp_flags) ||
 	    !rsp->gp_kthread)
 		return;
@@ -2410,11 +2414,11 @@ rcu_report_qs_rdp(int cpu, struct rcu_state *rsp, struct rcu_data *rdp)
 		return;
 	}
 	mask = rdp->grpmask;
+	rdp->core_needs_qs = false;
 	if ((rnp->qsmask & mask) == 0) {
+		rdp->core_needs_qs = false;
 		raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
 	} else {
-		rdp->core_needs_qs = false;
-
 		/*
 		 * This GP can't end until cpu checks in, so all of our
 		 * callbacks can be processed during the next GP.
@@ -3883,13 +3887,11 @@ static int rcu_pm_notify(struct notifier_block *self,
 	switch (action) {
 	case PM_HIBERNATION_PREPARE:
 	case PM_SUSPEND_PREPARE:
-		if (nr_cpu_ids <= 256) /* Expediting bad for large systems. */
-			rcu_expedite_gp();
+		rcu_expedite_gp();
 		break;
 	case PM_POST_HIBERNATION:
 	case PM_POST_SUSPEND:
-		if (nr_cpu_ids <= 256) /* Expediting bad for large systems. */
-			rcu_unexpedite_gp();
+		rcu_unexpedite_gp();
 		break;
 	default:
 		break;

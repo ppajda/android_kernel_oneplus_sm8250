@@ -90,6 +90,8 @@ static int smp2p_sleepstate_probe(struct platform_device *pdev)
 					"smp2p_sleepstate", dev);
 	if (ret) {
 		dev_err(dev, "fail to register smp2p threaded_irq=%d\n", irq);
+
+		__pm_relax(notify_ws);
 		goto err;
 	}
 	return 0;

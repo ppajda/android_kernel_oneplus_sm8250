@@ -127,62 +127,6 @@ int __weak of_node_to_nid(struct device_node *np)
 static struct device_node **phandle_cache;
 static u32 phandle_cache_mask;
 
-/*
- * Caller must hold devtree_lock.
- */
-static void __of_free_phandle_cache(void)
-{
-	u32 cache_entries = phandle_cache_mask + 1;
-	u32 k;
-
-	if (!phandle_cache)
-		return;
-
-	for (k = 0; k < cache_entries; k++)
-		of_node_put(phandle_cache[k]);
-
-	kfree(phandle_cache);
-	phandle_cache = NULL;
-}
-
-int of_free_phandle_cache(void)
-{
-	unsigned long flags;
-
-	raw_spin_lock_irqsave(&devtree_lock, flags);
-
-	__of_free_phandle_cache();
-
-	raw_spin_unlock_irqrestore(&devtree_lock, flags);
-
-	return 0;
-}
-#if !defined(CONFIG_MODULES)
-late_initcall_sync(of_free_phandle_cache);
-#endif
-
-/*
- * Caller must hold devtree_lock.
- */
-void __of_free_phandle_cache_entry(phandle handle)
-{
-	phandle masked_handle;
-	struct device_node *np;
-
-	if (!handle)
-		return;
-
-	masked_handle = handle & phandle_cache_mask;
-
-	if (phandle_cache) {
-		np = phandle_cache[masked_handle];
-		if (np && handle == np->phandle) {
-			of_node_put(np);
-			phandle_cache[masked_handle] = NULL;
-		}
-	}
-}
-
 void of_populate_phandle_cache(void)
 {
 	unsigned long flags;
@@ -192,7 +136,8 @@ void of_populate_phandle_cache(void)
 
 	raw_spin_lock_irqsave(&devtree_lock, flags);
 
-	__of_free_phandle_cache();
+	kfree(phandle_cache);
+	phandle_cache = NULL;
 
 	for_each_of_allnodes(np)
 		if (np->phandle && np->phandle != OF_PHANDLE_ILLEGAL)
@@ -248,17 +193,20 @@ static struct property *__of_find_property(const struct device_node *np,
 	struct property *pp;
 
 	if (!np)
-		return NULL;
+		goto notfound;
 
 	for (pp = np->properties; pp; pp = pp->next) {
 		if (of_prop_cmp(pp->name, name) == 0) {
 			if (lenp)
 				*lenp = pp->length;
-			break;
+			return pp;
 		}
 	}
 
-	return pp;
+notfound:
+	if (lenp)
+		*lenp = 0;
+	return NULL;
 }
 
 struct property *of_find_property(const struct device_node *np,
