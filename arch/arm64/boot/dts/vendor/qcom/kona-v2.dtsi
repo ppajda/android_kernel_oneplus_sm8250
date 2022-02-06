@@ -8,42 +8,42 @@
 
 &CPU0 {
 	capacity-dmips-mhz = <448>;
-	dynamic-power-coefficient = <103>;
+	dynamic-power-coefficient = <49>;
 };
 
 &CPU1 {
 	capacity-dmips-mhz = <448>;
-	dynamic-power-coefficient = <103>;
+	dynamic-power-coefficient = <49>;
 };
 
 &CPU2 {
 	capacity-dmips-mhz = <448>;
-	dynamic-power-coefficient = <103>;
+	dynamic-power-coefficient = <49>;
 };
 
 &CPU3 {
 	capacity-dmips-mhz = <448>;
-	dynamic-power-coefficient = <103>;
+	dynamic-power-coefficient = <49>;
 };
 
 &CPU4 {
-	capacity-dmips-mhz = <1022>;
-	dynamic-power-coefficient = <340>;
+	capacity-dmips-mhz = <1024>;
+	dynamic-power-coefficient = <91>;
 };
 
 &CPU5 {
-	capacity-dmips-mhz = <1022>;
-	dynamic-power-coefficient = <340>;
+	capacity-dmips-mhz = <1024>;
+	dynamic-power-coefficient = <91>;
 };
 
 &CPU6 {
-	capacity-dmips-mhz = <1022>;
-	dynamic-power-coefficient = <340>;
+	capacity-dmips-mhz = <1024>;
+	dynamic-power-coefficient = <91>;
 };
 
 &CPU7 {
-	capacity-dmips-mhz = <1024>;
-	dynamic-power-coefficient = <409>;
+	capacity-dmips-mhz = <1023>;
+	dynamic-power-coefficient = <134>;
 };
 
 &clock_camcc {
@@ -417,21 +417,14 @@
 
 	qcom,cpufreq-table-0 =
 			< 691200>,
-			< 883200>,
-			<1075200>,
-			<1248000>,
 			<1612800>,
 			<1708800>;
 
 	qcom,cpufreq-table-1 =
 			< 710400>,
-			<1286400>,
-			<1478400>,
-			<1766400>,
-			<2054400>,
-			<2150400>,
-			<2246400>,
-			<2342400>,
+			<1382400>,
+			<1574400>,
+			<1862400>,
 			<2419200>;
 
 	qcom,cpufreq-table-2 =
