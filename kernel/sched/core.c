@@ -3528,7 +3528,7 @@ static void finish_task_switch_dead(struct task_struct *prev)
 {
 	if (atomic_cmpxchg(&prev->async_free.running, 0, 1)) {
 		put_task_stack(prev);
-		put_task_struct_rcu_user(prev);
+		put_task_struct(prev);
 		return;
 	}
 
