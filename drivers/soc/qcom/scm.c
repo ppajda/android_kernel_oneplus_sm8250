@@ -28,7 +28,6 @@
 #define SCM_INTERRUPTED		1
 #define SCM_V2_EBUSY		-12
 
-static atomic_t scm_call_count = ATOMIC_INIT(0);
 static DEFINE_MUTEX(scm_lock);
 
 /*
@@ -738,8 +737,3 @@ early_initcall(scm_mem_protection_init);
 #endif
 
 #endif
-
-bool under_scm_call(void)
-{
-	return atomic_read(&scm_call_count);
-}
