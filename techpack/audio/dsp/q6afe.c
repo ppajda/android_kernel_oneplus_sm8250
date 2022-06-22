@@ -2028,7 +2028,6 @@ done:
 	}
 	return ret;
 }
-EXPORT_SYMBOL(set_smartpa_pm_status_apr);
 
 int get_smartpa_pm_result_apr(void *buf, int cmd_size)
 {
@@ -2086,7 +2085,6 @@ int get_smartpa_pm_result_apr(void *buf, int cmd_size)
 done:
 	return ret;
 }
-EXPORT_SYMBOL(get_smartpa_pm_result_apr);
 #endif /* OPLUS_FEATURE_SMARTPA_PM */
 
 /*
