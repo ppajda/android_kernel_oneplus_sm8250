@@ -781,37 +781,27 @@ static int __init parse_trust_cpu(char *arg)
 }
 early_param("random.trust_cpu", parse_trust_cpu);
 
-static bool crng_init_try_arch(struct crng_state *crng)
+static void crng_initialize(struct crng_state *crng)
 {
 	int		i;
-	bool		arch_init = true;
+	int		arch_init = 1;
 	unsigned long	rv;
 
+	memcpy(&crng->state[0], "expand 32-byte k", 16);
+	if (crng == &primary_crng)
+		_extract_entropy(&input_pool, &crng->state[4],
+				 sizeof(__u32) * 12, 0);
+	else
+		_get_random_bytes(&crng->state[4], sizeof(__u32) * 12);
 	for (i = 4; i < 16; i++) {
 		if (!arch_get_random_seed_long(&rv) &&
 		    !arch_get_random_long(&rv)) {
 			rv = random_get_entropy();
-			arch_init = false;
+			arch_init = 0;
 		}
 		crng->state[i] ^= rv;
 	}
-
-	return arch_init;
-}
-
-static void crng_initialize_secondary(struct crng_state *crng)
-{
-	memcpy(&crng->state[0], "expand 32-byte k", 16);
-	_get_random_bytes(&crng->state[4], sizeof(__u32) * 12);
-	crng_init_try_arch(crng);
-	crng->init_time = jiffies - CRNG_RESEED_INTERVAL - 1;
-}
-
-static void __init crng_initialize_primary(struct crng_state *crng)
-{
-	memcpy(&crng->state[0], "expand 32-byte k", 16);
-	_extract_entropy(&input_pool, &crng->state[4], sizeof(__u32) * 12, 0);
-	if (crng_init_try_arch(crng) && trust_cpu) {
+	if (trust_cpu && arch_init && crng == &primary_crng) {
 		invalidate_batched_entropy();
 		numa_crng_init();
 		crng_init = 2;
@@ -832,7 +822,7 @@ static void do_numa_crng_init(struct work_struct *work)
 		crng = kmalloc_node(sizeof(struct crng_state),
 				    GFP_KERNEL | __GFP_NOFAIL, i);
 		spin_lock_init(&crng->lock);
-		crng_initialize_secondary(crng);
+		crng_initialize(crng);
 		pool[i] = crng;
 	}
 	/* pairs with READ_ONCE() in select_crng() */
@@ -1774,7 +1764,7 @@ static void __init init_std_data(struct entropy_store *r)
 int __init rand_initialize(void)
 {
 	init_std_data(&input_pool);
-	crng_initialize_primary(&primary_crng);
+	crng_initialize(&primary_crng);
 	crng_global_init_time = jiffies;
 	if (ratelimit_disable) {
 		urandom_warning.interval = 0;
