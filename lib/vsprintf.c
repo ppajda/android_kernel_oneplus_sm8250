@@ -1712,7 +1712,6 @@ static struct random_ready_callback random_ready = {
 
 static int __init initialize_ptr_random(void)
 {
-#ifndef CONFIG_LRNG
 	int key_size = sizeof(ptr_key);
 	int ret;
 
@@ -1723,9 +1722,6 @@ static int __init initialize_ptr_random(void)
 	}
 
 	ret = add_random_ready_callback(&random_ready);
-#else
-	int ret = add_random_ready_callback(&random_ready);
-#endif
 	if (!ret) {
 		return 0;
 	} else if (ret == -EALREADY) {
