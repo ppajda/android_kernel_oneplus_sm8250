@@ -803,6 +803,7 @@ KBUILD_CFLAGS	+= -mllvm -polly \
 		   -mllvm -polly-position=before-vectorizer \
 		   -mllvm -polly-vectorizer=stripmine \
 		   -mllvm -polly-detect-profitability-min-per-loop-insts=40 \
+		   -mllvm -polly-omp-backend=LLVM \
 		   -mllvm -polly-invariant-load-hoisting
 endif
 ifneq ($(CROSS_COMPILE),)
