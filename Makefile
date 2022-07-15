@@ -790,6 +790,7 @@ KBUILD_CFLAGS += $(stackp-flags-y)
 ifeq ($(cc-name),clang)
 ifdef CONFIG_POLLY_CLANG
 KBUILD_CFLAGS	+= -mllvm -polly \
+		   -mllvm -polly-omp-backend=LLVM \
 		   -mllvm -polly-num-threads=0 \
 		   -mllvm -polly-scheduling=dynamic \
 		   -mllvm -polly-scheduling-chunksize=1 \
@@ -803,7 +804,6 @@ KBUILD_CFLAGS	+= -mllvm -polly \
 		   -mllvm -polly-position=before-vectorizer \
 		   -mllvm -polly-vectorizer=stripmine \
 		   -mllvm -polly-detect-profitability-min-per-loop-insts=40 \
-		   -mllvm -polly-omp-backend=LLVM \
 		   -mllvm -polly-invariant-load-hoisting
 endif
 ifneq ($(CROSS_COMPILE),)
