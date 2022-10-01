@@ -130,17 +130,16 @@ x509.genkey
 # Kconfig presets
 all.config
 
+# Object directory
+out/
+
 # Kdevelop4
 *.kdev4
 
 # fetched Android config fragments
 kernel/configs/android-*.cfg
 
-# ln the wakelock_profiler
-drivers/soc/oplus/owakelock
-include/soc/oplus/oplus_wakelock_profiler.h
-
-#
-#Ignoring Android.bp link file
-#
-Android.bp
+# Object directory
+out/
+build.sh
+clang_build.sh
