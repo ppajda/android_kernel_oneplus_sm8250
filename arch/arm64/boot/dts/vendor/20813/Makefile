@@ -5,7 +5,7 @@ dtbo-$(CONFIG_ARCH_LAGOON) += \
 
 lagoon-mtp-ebba-overlay.dtbo-base := lagoon-ebba.dtb
 else
-$(info ebba not use overlay dtb)
+#$(info ebba not use overlay dtb)
 dtb-$(CONFIG_ARCH_LAGOON) += \
 		lagoon-mtp.dtb
 endif
