@@ -440,7 +440,7 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
 		   -std=gnu89 \
-		   -fdiagnostics-color=always -ftree-vectorize -pipe \
+		   -mcpu=cortex-a55 -fdiagnostics-color=always -pipe \
 		   -Wno-void-pointer-to-enum-cast -Wno-misleading-indentation -Wno-unused-function -Wno-bool-operation \
 		   -Wno-unsequenced -Wno-void-pointer-to-int-cast -Wno-unused-variable -Wno-pointer-to-int-cast -Wno-pointer-to-enum-cast \
 		   -Wno-fortify-source -Wno-strlcpy-strlcat-size -Wno-align-mismatch
@@ -756,6 +756,7 @@ KBUILD_CFLAGS	+= $(call cc-disable-warning, format-truncation)
 KBUILD_CFLAGS	+= $(call cc-disable-warning, format-overflow)
 KBUILD_CFLAGS	+= $(call cc-disable-warning, int-in-bool-context)
 KBUILD_CFLAGS	+= $(call cc-disable-warning, address-of-packed-member)
+KBUILD_CFLAGS	+= $(call cc-disable-warning, void-ptr-dereference)
 
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS   += -Os
