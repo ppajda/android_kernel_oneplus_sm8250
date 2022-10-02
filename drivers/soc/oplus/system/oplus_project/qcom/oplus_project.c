@@ -436,7 +436,7 @@ static void dump_secure_stage(struct seq_file *s)
 }
 
 //#ifdef OPLUS_FEATURE_NFC_FELICA
-static void __init update_felica_cfg(struct proc_dir_entry *parent) {
+static void update_felica_cfg(struct proc_dir_entry *parent) {
 
     static const char* simfree_cfg_src[3] = {
         "/odm/etc/felica_cfg/simfree/common.cfg",
@@ -450,7 +450,7 @@ static void __init update_felica_cfg(struct proc_dir_entry *parent) {
         "/odm/etc/felica_cfg/ymobile/mfs.cfg",
     };
 
-    char * substr = strstr(boot_command_line, "japan.operator=");
+    char * substr = strstr(saved_command_line, "japan.operator=");
     pr_err("update_japan_softlink\n");
     if(!substr)
         return;
@@ -474,14 +474,14 @@ static void __init update_felica_cfg(struct proc_dir_entry *parent) {
 }
 //#endif /*OPLUS_FEATURE_NFC_FELICA*/
 
-static void __init update_manifest(struct proc_dir_entry *parent)
+static void update_manifest(struct proc_dir_entry *parent)
 {
     static const char* manifest_src[2] = {
         "/vendor/odm/etc/vintf/manifest_ssss.xml",
         "/vendor/odm/etc/vintf/manifest_dsds.xml",
     };
     mm_segment_t fs;
-    char * substr = strstr(boot_command_line, "simcardnum.doublesim=");
+    char * substr = strstr(saved_command_line, "simcardnum.doublesim=");
 
     if(!substr)
         return;
@@ -503,14 +503,14 @@ static void __init update_manifest(struct proc_dir_entry *parent)
     set_fs(fs);
 }
 
-static void __init update_telephony_manifest(struct proc_dir_entry *parent)
+static void update_telephony_manifest(struct proc_dir_entry *parent)
 {
     static const char* manifest_src[2] = {
         "/vendor/odm/etc/vintf/telephony_manifest_ssss.xml",
         "/vendor/odm/etc/vintf/telephony_manifest_dsds.xml",
     };
     mm_segment_t fs;
-    char * substr = strstr(boot_command_line, "simcardnum.doublesim=");
+    char * substr = strstr(saved_command_line, "simcardnum.doublesim=");
 
     if(!substr)
         return;
