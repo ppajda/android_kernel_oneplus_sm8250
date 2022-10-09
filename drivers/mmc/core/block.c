@@ -1732,7 +1732,6 @@ static void mmc_blk_read_single(struct mmc_queue *mq, struct request *req)
 			err = mmc_send_status(card, &status);
 			if (err)
 				goto error_exit;
-
 			if (!mmc_host_is_spi(host) &&
 			    !mmc_blk_in_tran_state(status)) {
 				err = mmc_blk_fix_state(card, req);
@@ -1742,8 +1741,7 @@ static void mmc_blk_read_single(struct mmc_queue *mq, struct request *req)
 
 			if (!mrq->cmd->error)
 				break;
- 		}
-
+		}
 		if (mrq->cmd->error ||
 		    mrq->data->error ||
 		    (!mmc_host_is_spi(host) &&
