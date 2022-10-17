@@ -25,6 +25,8 @@
 #include "wlan_fwol_public_structs.h"
 #define FWOL_WILDCARD_PDEV_ID   0
 
+#define FWOL_WILDCARD_PDEV_ID   0
+
 /**
  * tgt_fwol_register_ev_handler() - register south bound event handler
  * @psoc: psoc handle

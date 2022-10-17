@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2020 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2011-2021 The Linux Foundation. All rights reserved.
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
@@ -1443,9 +1443,18 @@ ol_txrx_pdev_post_attach(struct cdp_soc_t *soc_hdl, uint8_t pdev_id)
 	pdev->rx_pn[htt_sec_type_tkip].len =
 		pdev->rx_pn[htt_sec_type_tkip_nomic].len =
 			pdev->rx_pn[htt_sec_type_aes_ccmp].len = 48;
+
+	pdev->rx_pn[htt_sec_type_aes_ccmp_256].len =
+		pdev->rx_pn[htt_sec_type_aes_gcmp].len =
+			pdev->rx_pn[htt_sec_type_aes_gcmp_256].len = 48;
+
 	pdev->rx_pn[htt_sec_type_tkip].cmp =
 		pdev->rx_pn[htt_sec_type_tkip_nomic].cmp =
 			pdev->rx_pn[htt_sec_type_aes_ccmp].cmp = ol_rx_pn_cmp48;
+
+	pdev->rx_pn[htt_sec_type_aes_ccmp_256].cmp =
+		pdev->rx_pn[htt_sec_type_aes_gcmp].cmp =
+		    pdev->rx_pn[htt_sec_type_aes_gcmp_256].cmp = ol_rx_pn_cmp48;
 
 	/* WAPI: 128-bit PN */
 	pdev->rx_pn[htt_sec_type_wapi].len = 128;
@@ -5877,6 +5886,9 @@ static uint32_t ol_txrx_get_cfg(struct cdp_soc_t *soc_hdl, enum cdp_dp_cfg cfg)
 		break;
 	case cfg_dp_lro_enable:
 		value = cfg_ctx->lro_enable;
+		break;
+	case cfg_dp_sg_enable:
+		value = cfg_ctx->sg_enable;
 		break;
 	case cfg_dp_gro_enable:
 		value = cfg_ctx->gro_enable;
