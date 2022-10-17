@@ -15520,6 +15520,8 @@ static int wlan_hdd_state_ctrl_param_open(struct inode *inode,
 	return 0;
 }
 
+static int hdd_driver_load(void);
+
 static void __hdd_inform_wifi_off(void)
 {
 	struct hdd_context *hdd_ctx = cds_get_context(QDF_MODULE_ID_HDD);
