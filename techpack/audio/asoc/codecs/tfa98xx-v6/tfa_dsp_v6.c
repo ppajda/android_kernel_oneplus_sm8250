@@ -14,7 +14,7 @@
 #include "tfa_internal.h"
 
 #ifdef OPLUS_ARCH_EXTENDS
-extern int ftm_mode;
+static int ftm_mode = 0;
 extern char ftm_SpeakerCalibration[17];
 extern char ftm_spk_resistance[24];
 
