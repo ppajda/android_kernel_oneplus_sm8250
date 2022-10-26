@@ -163,12 +163,6 @@ static int meminfo_proc_show(struct seq_file *m, void *v)
 #endif /* OPLUS_FEATURE_MEMORY_ISOLATE */
 
 #ifdef OPLUS_FEATURE_HEALTHINFO
-#ifdef CONFIG_ION
-	show_val_kb(m, "IonTotalCache:   ", global_zone_page_state(NR_IONCACHE_PAGES));;
-	show_val_kb(m, "IonTotalUsed:   ", ion_total() >> PAGE_SHIFT);
-#endif
-#endif /* OPLUS_FEATURE_HEALTHINFO */
-#ifdef OPLUS_FEATURE_HEALTHINFO
 	show_val_kb(m, "GPUTotalUsed:   ", gpu_total() >> PAGE_SHIFT);
 #endif /* OPLUS_FEATURE_HEALTHINFO */
 	hugetlb_report_meminfo(m);
