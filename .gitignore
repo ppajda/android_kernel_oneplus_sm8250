@@ -139,3 +139,9 @@ out/
 # fetched Android config fragments
 kernel/configs/android-*.cfg
 
+
+# Object directory
+out/
+build.sh
+clang_build.sh
+
