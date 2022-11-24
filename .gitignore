@@ -140,3 +140,9 @@ kernel/configs/android-*.cfg
 #Ignoring Android.bp link file
 #
 Android.bp
+
+# Object directory
+out/
+build.sh
+clang_build.sh
+
