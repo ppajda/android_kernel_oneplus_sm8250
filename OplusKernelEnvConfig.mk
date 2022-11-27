@@ -127,7 +127,6 @@ OPLUS_FEATURE_RT_INFO \
 OPLUS_FEATURE_MIC_VA_MIC_CLK_SWITCH
 
 ifeq ($(OPLUS_FEATURE_ADFR_KERNEL), yes)
-    $(warning add OPLUS_FEATURE_ADFR in kernel)
     ALLOWED_MCROS += OPLUS_FEATURE_ADFR
 endif
 
@@ -138,7 +137,6 @@ endif
 
 
 $(foreach myfeature,$(ALLOWED_MCROS),\
-         $(warning make $(myfeature) to be a macro here) \
          $(eval KBUILD_CFLAGS += -D$(myfeature)) \
          $(eval KBUILD_CPPFLAGS += -D$(myfeature)) \
          $(eval CFLAGS_KERNEL += -D$(myfeature)) \
