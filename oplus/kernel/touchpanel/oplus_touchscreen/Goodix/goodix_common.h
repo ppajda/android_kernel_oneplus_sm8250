@@ -8,7 +8,6 @@
 
 #include <linux/uaccess.h>
 #include "../touchpanel_common.h"
-#include "../touchpanel_healthinfo.h"
 
 #include <linux/firmware.h>
 #include <linux/rtc.h>
@@ -21,8 +20,7 @@
 /****************************PART1:auto test define*************************************/
 #define Limit_MagicNum1     0x494D494C
 #define Limit_MagicNum2     0x474D4954
-#define Limit_ItemMagic     0x4F50504F
-#define Limit_ItemMagic_V2  0x4F504C53
+#define Limit_MagicItem     0x4F50504F
 
 struct auto_test_header {
     uint32_t magic1;

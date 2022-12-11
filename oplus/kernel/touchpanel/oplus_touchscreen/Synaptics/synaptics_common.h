@@ -15,8 +15,6 @@
 #include <linux/time.h>
 
 #include "../touchpanel_common.h"
-#include "../touchpanel_healthinfo.h"
-
 #include "synaptics_firmware_v2.h"
 #include <soc/oplus/system/oplus_project.h>
 #include <soc/oplus/device_info.h>
@@ -35,7 +33,6 @@
 #define Limit_MagicNum2     0x474D4954
 #define Limit_MagicNum2_V2  0x32562D54
 #define Limit_ItemMagic     0x4F50504F
-#define Limit_ItemMagic_V2  0x4F504C53
 
 
 /*********PART3:Struct Area**********************/
@@ -211,7 +208,6 @@ enum test_item_bit {
     TYPE_TREXSHORT_CUSTOM   = 25,
     TYPE_HYBRIDABS_DIFF_CBC = 26,
     TYPE_HYBRIDABS_NOSIE    = 29,
-	TYPE_HYBRIDRAW_CAP_WITH_AD  = 47,
 };
 
 enum {
