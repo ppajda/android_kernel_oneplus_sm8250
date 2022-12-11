@@ -1,5 +1,5 @@
 &mdss_mdp {
-	dsi_oplus19065_samsung_1440_3168_dsc_cmd: qcom,mdss_dsi_oplus19065_samsung_1440_3168_dsc_cmd {
+	dsi_oppo19065_samsung_1440_3168_dsc_cmd: qcom,mdss_dsi_oppo19065_samsung_1440_3168_dsc_cmd {
 		qcom,mdss-dsi-panel-name = "samsung AMS678UW01 dsc cmd mode panel";
 		oplus,mdss-dsi-vendor-name = "ANA6706";
 		oplus,mdss-dsi-manufacture = "samsung1024";
@@ -1047,9 +1047,8 @@
 	};
 };
 
-&dsi_oplus19065_samsung_1440_3168_dsc_cmd {
+&dsi_oppo19065_samsung_1440_3168_dsc_cmd {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
-	qcom,iris-supply-entries = <&dsi_iris_pwr_supply>;
 	qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_dcs";
 	qcom,mdss-dsi-bl-min-level = <1>;
 	qcom,mdss-dsi-bl-normal-max-level = <1023>;
@@ -1087,14 +1086,10 @@
 	};
 };
 
-&dsi_oplus19065_samsung_1440_3168_dsc_cmd {
-	qcom,platform-iris-reset-gpio = <&tlmm 174 0>;
-	qcom,platform-iris-vdd-gpio = <&tlmm 175 0>;
-	qcom,platform-analog-bypass-gpio = <&tlmm 173 0>;
-	qcom,platform-analog-bypass-status-gpio = <&tlmm 112 0>;
+&dsi_oppo19065_samsung_1440_3168_dsc_cmd {
 	qcom,platform-panel-te-esd-gpio = <&tlmm 109 0>;
 };
-&dsi_oplus19065_samsung_1440_3168_dsc_cmd {
+&dsi_oppo19065_samsung_1440_3168_dsc_cmd {
 	qcom,panel_voltage_vddi_name = "vddio";
 	qcom,panel_voltage_vddi = <0 1650000 1800000 1950000>;
 	qcom,panel_voltage_vddr_name = "vddio";

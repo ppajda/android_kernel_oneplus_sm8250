@@ -684,8 +684,8 @@
 	qcom,platform-te-gpio = <&tlmm 66 0>;
 	qcom,platform-reset-gpio =  <&tlmm 75 0>;
 	qcom,platform-panel-vout-gpio = <&tlmm 24 0>;
-	oplus,mdss-dsi-vendor-name = "AMB655X";
-	oplus,mdss-dsi-manufacture = "samsung1024";
+	oppo,mdss-dsi-vendor-name = "AMB655X";
+	oppo,mdss-dsi-manufacture = "samsung1024";
 	oplus,color_vivid_status;
 	oplus,color_srgb_status;
 

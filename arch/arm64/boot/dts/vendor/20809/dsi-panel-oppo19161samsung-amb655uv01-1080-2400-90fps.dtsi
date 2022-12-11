@@ -1,5 +1,5 @@
 &mdss_mdp {
-	dsi_oplus19161samsung_amb655uv01_1080_2400_cmd: qcom,mdss_dsi_oplus19161samsung_amb655uv01_1080_2400_cmd {
+	dsi_oppo19161samsung_amb655uv01_1080_2400_cmd: qcom,mdss_dsi_oppo19161samsung_amb655uv01_1080_2400_cmd {
 		qcom,mdss-dsi-panel-name =
 		  "samsung amb655uv01 amoled fhd+ panel with DSC";
 		qcom,mdss-dsi-panel-type = "dsi_cmd_mode";
@@ -71,8 +71,8 @@
 				qcom,mdss-dsi-panel-phy-timings = [00 22 05 09 25 23 09 09 06 03 04 00];
 				qcom,display-topology = <1 1 1>;
 				qcom,default-topology-index = <0>;
-				oplus,fod-on-vblank = <0>;
-				oplus,fod-off-vblank = <0>;
+				oppo,fod-on-vblank = <0>;
+				oppo,fod-off-vblank = <0>;
 				qcom,mdss-dsi-on-command = [
 					39 01 00 00 00 00 03 9f 5A 5A
 					15 01 00 00 00 00 02 9D 01
@@ -324,8 +324,8 @@
 				qcom,mdss-dsi-panel-phy-timings = [00 22 05 09 25 23 09 09 06 03 04 00];
 				qcom,display-topology = <1 1 1>;
 				qcom,default-topology-index = <0>;
-				oplus,fod-on-vblank = <1>;
-				oplus,fod-off-vblank = <1>;
+				oppo,fod-on-vblank = <1>;
+				oppo,fod-off-vblank = <1>;
 				qcom,mdss-dsi-on-command = [
 					39 01 00 00 00 00 03 9f 5A 5A
 					15 01 00 00 00 00 02 9D 01
@@ -571,7 +571,7 @@
 	};
 };
 
-&dsi_oplus19161samsung_amb655uv01_1080_2400_cmd {
+&dsi_oppo19161samsung_amb655uv01_1080_2400_cmd {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
 	qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_dcs";
 	qcom,mdss-dsi-bl-min-level = <1>;
@@ -580,10 +580,10 @@
 	qcom,mdss-brightness-default-level = <400>;
 	qcom,platform-te-gpio = <&tlmm 66 0>;
 	qcom,platform-reset-gpio =  <&tlmm 75 0>;
-	oplus,mdss-dsi-vendor-name = "AMB655UV01";
-	oplus,mdss-dsi-manufacture = "samsung1024";
+	oppo,mdss-dsi-vendor-name = "AMB655UV01";
+	oppo,mdss-dsi-manufacture = "samsung1024";
 
-	oplus,dsi-fod-brightness = <0 0xff>,
+	oppo,dsi-fod-brightness = <0 0xff>,
 				<1 0xee>,
 				<2 0xea>,
 				<3 0xe9>,

@@ -176,7 +176,7 @@
 	};
 
 	//#ifdef OPLUS_FEATURE_FINGERPRINT
-	oplus_fp_common {
+	oppo_fp_common {
 		compatible = "oplus,fp_common";
 		oplus,fp_gpio_num = <1>; /* the gpio number of fingerprint id used */
 		oplus,fp_gpio_0 = <&tlmm 77 0x0>;
@@ -184,13 +184,13 @@
 		pinctrl-0 = <&gpio_id2_default>;
 		goodix_optical_G5 {
 			oplus,fp-id = <1>; /* fp id mapping table */
-			vendor-chip = <11>; /* please refer to the struct fp_vendor_t in oplus_fp_commmon.n */
+			vendor-chip = <11>; /* please refer to the struct fp_vendor_t in oppo_fp_commmon.n */
 			eng-menu = "-1,-1"; /* represents SNR, inclination test item in engineer menu, and 0/1 means off/on */
 			chip-name = "G_OPTICAL_19811_G5";  /* /proc/fp_id, will be displayed in engineer menu  */
 		};
 		goodix_optical_G6 {
 			oplus,fp-id = <0>; /* fp id mapping table */
-			vendor-chip = <11>; /* please refer to the struct fp_vendor_t in oplus_fp_commmon.n */
+			vendor-chip = <11>; /* please refer to the struct fp_vendor_t in oppo_fp_commmon.n */
 			eng-menu = "-1,-1"; /* represents SNR, inclination test item in engineer menu, and 0/1 means off/on */
 			chip-name = "G_OPTICAL_19811_G6";  /* /proc/fp_id, will be displayed in engineer menu  */
 		};
@@ -200,7 +200,7 @@
 		compatible = "goodix,goodix_fp";
 		interrupt-parent = <&tlmm>;
 		interrupts = <23 0>;
-		power-mode = <2> ; /*please refer to the struct fp_power_mode_t in oplus_fp_commmon.n ,0: power mode not set, 1: ldo power, 2: gpio power, 3: auto power */
+		power-mode = <2> ; /*please refer to the struct fp_power_mode_t in oppo_fp_commmon.n ,0: power mode not set, 1: ldo power, 2: gpio power, 3: auto power */
 		goodix,gpio_irq = <&tlmm 23 0x1>;
 		goodix,gpio_reset = <&tlmm 68 0x0>;
 		goodix,goodix_pwr = <&tlmm 125 0x0>;
@@ -439,7 +439,7 @@
 
 		platform_support_project_dir = <19161 19161 19805 19811>;
 
-		platform_support_project_commandline = "mdss_dsi_oplus19161boe_nt37800_1080_2400_cmd","mdss_dsi_oplus19161boe_nt37800_1080_2400_cmd","default_commandline";
+		platform_support_project_commandline = "mdss_dsi_oppo19161boe_nt37800_1080_2400_cmd","mdss_dsi_oppo19161boe_nt37800_1080_2400_cmd","default_commandline";
 
 	/* SW Support Feature Control */
 		black_gesture_support;
@@ -949,7 +949,7 @@
 	qcom,platform-sec-reset-gpio = <&tlmm 128 0>;
 };
 &sde_dsi {
-	qcom,dsi-default-panel = <&dsi_oplus19065_samsung_1440_3168_dsc_cmd>;
+	qcom,dsi-default-panel = <&dsi_oppo19065_samsung_1440_3168_dsc_cmd>;
 };
 //#endif
 &thermal_zones {
