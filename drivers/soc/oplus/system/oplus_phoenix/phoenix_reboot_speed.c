@@ -374,7 +374,7 @@ tp_initcall_finish_cb(void *data, initcall_t fn, int ret)
 	bootprof_initcall(fn, duration);
 }
 
-static struct tracepoints_table interests[] = {
+static struct tracepoints_table interests[] __refdata = {
 	{.name = "initcall_start", .func = tp_initcall_start_cb},
 	{.name = "initcall_finish", .func = tp_initcall_finish_cb},
 };
