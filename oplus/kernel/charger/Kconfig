@@ -22,19 +22,19 @@ config OPLUS_SMART_CHARGER_SUPPORT
 	  Say Y to include support
 
 config OPLUS_RTC_DET_SUPPORT
-	bool "OPLUS RTC DET SUPPORT"
+	tristate "OPLUS RTC DET SUPPORT"
 	default n
 	help
 	  Say Y to include support
 
 config OPLUS_CHECK_CHARGERID_VOLT
-	bool "OPLUS CHECK CHARGERID VOLT"
+	tristate "OPLUS CHECK CHARGERID VOLT"
 	default n
 	help
 	  Say Y to include support
 
 config OPLUS_SHIP_MODE_SUPPORT
-	bool "OPLUS_SHIP_MODE_SUPPORT"
+	tristate "OPLUS_SHIP_MODE_SUPPORT"
 	default n
 	help
 	  Say Y to include support
