@@ -4045,8 +4045,6 @@ static int ufshcd_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd)
 send_orig_cmd:
 #endif
 #endif
-	/* Vote PM QoS for the request */
-	ufshcd_vops_pm_qos_req_start(hba, cmd->request);
 
 	WARN_ON(hba->clk_gating.state != CLKS_ON);
 
