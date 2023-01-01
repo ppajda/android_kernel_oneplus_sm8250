@@ -26,28 +26,8 @@
 
 #include "walt.h"
 
-#ifdef OPLUS_FEATURE_SCHED_ASSIST
-#include <linux/sched_assist/sched_assist_common.h>
-#include <linux/cpufreq.h>
-#endif /* OPLUS_FEATURE_SCHED_ASSIST */
-
-#ifdef OPLUS_FEATURE_SCHED_ASSIST
-#include <linux/special_opt/special_opt.h>
-#endif
-#ifdef OPLUS_FEATURE_SCHED_ASSIST
-extern unsigned int walt_scale_demand_divisor;
-bool ux_task_misfit(struct task_struct *p, int cpu);
-#define scale_demand(d) ((d)/walt_scale_demand_divisor)
-#endif /* OPLUS_FEATURE_SCHED_ASSIST */
-
 #ifdef CONFIG_OPLUS_FEATURE_GAME_OPT
 #include "../../drivers/soc/oplus/game_opt/game_ctrl.h"
-#endif
-
-#ifdef OPLUS_FEATURE_SCHED_ASSIST
-bool prefer_silver_check_freq(int cpu);
-bool prefer_silver_check_task_util(struct task_struct *p);
-bool prefer_silver_check_cpu_util(int cpu);
 #endif
 
 #ifdef OPLUS_FEATURE_HEALTHINFO
@@ -56,13 +36,6 @@ bool prefer_silver_check_cpu_util(int cpu);
 #include <soc/oplus/healthinfo.h>
 #endif
 #endif /* OPLUS_FEATURE_HEALTHINFO */
-
-#if IS_ENABLED(CONFIG_OPLUS_FEATURE_CPU_JANKINFO)
-#include <linux/cpu_jankinfo/jank_tasktrack.h>
-#endif
-#if defined(OPLUS_FEATURE_TASK_CPUSTATS) && defined(CONFIG_OPLUS_SCHED)
-#include <linux/task_sched_info.h>
-#endif /* defined(OPLUS_FEATURE_TASK_CPUSTATS) && defined(CONFIG_OPLUS_SCHED) */
 
 #if defined(OPLUS_FEATURE_IOMONITOR) && defined(CONFIG_IOMONITOR)
 #include <linux/iomonitor/iomonitor.h>
@@ -7150,18 +7123,6 @@ static int get_start_cpu(struct task_struct *p)
         }
 #endif
 
-	trace_sched_cpu_sel(p,
-			task_boost,
-			task_skip_min,
-			boosted,
-			task_boost_policy(p),
-			task_util(p),
-			cpu_util(task_cpu(p)),
-			test_task_ux(p),
-			task_demand_fits(p, rd->min_cap_orig_cpu),
-			sysctl_prefer_silver,
-			start_cpu);
-
 	return start_cpu;
 }
 
@@ -7169,12 +7130,6 @@ enum fastpaths {
 	NONE = 0,
 	SYNC_WAKEUP,
 	PREV_CPU_FASTPATH,
-#if defined(OPLUS_FEATURE_SCHED_ASSIST) && defined(CONFIG_OPLUS_FEATURE_SCHED_SPREAD)
-	NR_WAKEUP_SELECT,
-#endif
-#ifdef CONFIG_OPLUS_FEATURE_INPUT_BOOST_V4
-	FRAME_BOOST_GROUP,
-#endif /* CONFIG_OPLUS_FEATURE_INPUT_BOOST_V4 */
 };
 
 static void find_best_target(struct sched_domain *sd, cpumask_t *cpus,
@@ -7207,10 +7162,7 @@ static void find_best_target(struct sched_domain *sd, cpumask_t *cpus,
 	unsigned int target_nr_rtg_high_prio = UINT_MAX;
 	bool rtg_high_prio_task = task_rtg_high_prio(p);
 	cpumask_t new_allowed_cpus;
-	bool skip_big_cluster = false;
-#if defined(OPLUS_FEATURE_SCHED_ASSIST) && defined(CONFIG_OPLUS_FEATURE_SCHED_SPREAD)
-	bool strict = fbt_env->strict_max;
-#endif
+
 	/*
 	 * In most cases, target_capacity tracks capacity_orig of the most
 	 * energy efficient CPU candidate, thus requiring to minimise
@@ -7225,11 +7177,7 @@ static void find_best_target(struct sched_domain *sd, cpumask_t *cpus,
 	if (prefer_idle && boosted)
 		target_capacity = 0;
 
-#ifdef OPLUS_FEATURE_SCHED_ASSIST
-	if (fbt_env->strict_max  || p->in_iowait ||(sysctl_cpu_multi_thread && !is_heavy_load_task(p)))
-#else
 	if (fbt_env->strict_max || p->in_iowait)
-#endif
 		most_spare_wake_cap = LONG_MIN;
 
 	/* Find start CPU based on boost value */
@@ -7252,14 +7200,6 @@ static void find_best_target(struct sched_domain *sd, cpumask_t *cpus,
 			goto target;
 		}
 	}
-#if defined(OPLUS_FEATURE_SCHED_ASSIST) && defined(CONFIG_OPLUS_FEATURE_SCHED_SPREAD)
-	/* enabled nr-balance to spread tasks */
-	sched_assist_spread_tasks(p, p->cpus_allowed, fbt_env->start_cpu, fbt_env->skip_cpu, cpus, strict);
-	if (!cpumask_empty(cpus)) {
-		fbt_env->fastpath = NR_WAKEUP_SELECT;
-		goto out;
-	}
-#endif
 	/* Scan CPUs in all SDs */
 	sg = start_sd->groups;
 
@@ -9328,7 +9268,6 @@ static int detach_tasks(struct lb_env *env)
 	int detached = 0;
 	int orig_loop = env->loop;
 	u64 start_t = rq_clock(env->src_rq);
-	bool skip_big_cluster = false;
 
 	lockdep_assert_held(&env->src_rq->lock);
 
