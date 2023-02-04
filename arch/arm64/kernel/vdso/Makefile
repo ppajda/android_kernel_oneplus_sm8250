@@ -19,7 +19,7 @@ obj-vdso := $(addprefix $(obj)/, $(obj-vdso))
 
 ccflags-y += $(call cc-option, -fno-whole-program)
 ldflags-y := -shared -nostdlib -soname=linux-vdso.so.1 --hash-style=sysv \
-		--build-id -n -T
+		-Bsymbolic --eh-frame-hdr --build-id -n -T
 		
 ifeq ($(CONFIG_LTO_CLANG),y)
 ccflags-y	+= $(DISABLE_LTO)
@@ -30,7 +30,6 @@ ccflags-y := -fno-common -fno-builtin -fno-stack-protector -ffixed-x18
 ccflags-y += -DDISABLE_BRANCH_PROFILING
 ccflags-y += $(call cc-option, -fno-whole-program)
 
-VDSO_LDFLAGS := -Bsymbolic
 
 CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_FTRACE) -Os $(CC_FLAGS_SCS)
 KASAN_SANITIZE			:= n
