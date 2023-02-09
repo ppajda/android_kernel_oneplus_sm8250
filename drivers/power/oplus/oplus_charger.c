@@ -10675,6 +10675,7 @@ static void oplus_chg_kpoc_power_off_check(struct oplus_chg_chip *chip)
 
 static void oplus_chg_print_log(struct oplus_chg_chip *chip)
 {
+#if 0
 	if(chip->vbatt_num == 1){
 		charger_xlog_printk(CHG_LOG_CRTI,
 			"CHGR[ %d / %d / %d / %d / %d ], "
@@ -10752,6 +10753,7 @@ static void oplus_chg_print_log(struct oplus_chg_chip *chip)
 	print_voocphy_log_buf();
        if (oplus_pps_get_chg_status() != PPS_NOT_SUPPORT)
                oplus_pps_print_log();
+#endif
 }
 
 static void oplus_chg_print_bcc_log(struct oplus_chg_chip *chip)
