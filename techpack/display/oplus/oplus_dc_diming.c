@@ -809,7 +809,8 @@ static int sde_connector_update_hbm_exit(struct drm_connector *connector, struct
 			}
 			if (!strcmp(panel->oplus_priv.vendor_name, "AMS643YE01") ||
 				!strcmp(panel->oplus_priv.vendor_name, "AMS643YE01IN20057") ||
-				!strcmp(panel->name, "s6e3fc3_fhd_oled_cmd_samsung")) {
+				!strcmp(panel->name, "s6e3fc3_fhd_oled_cmd_samsung") ||
+				!strcmp(panel->oplus_priv.vendor_name, "SOFE03F")) {
 				if(panel->bl_config.bl_level > panel->bl_config.brightness_normal_max_level) {
 					if (!strcmp(panel->name, "samsung ams643ye01 in 20127 amoled fhd+ panel")) {
 						rc = dsi_panel_tx_cmd_set(panel, DSI_CMD_HBM_ENTER1_SWITCH);
