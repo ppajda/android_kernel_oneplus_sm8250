@@ -77,12 +77,6 @@
 #include <asm/div64.h>
 #include "internal.h"
 
-#ifdef OPLUS_FEATURE_HEALTHINFO
-#ifdef CONFIG_OPLUS_MEM_MONITOR
-#include <linux/healthinfo/memory_monitor.h>
-#endif
-#endif /* OPLUS_FEATURE_HEALTHINFO */
-
 #if defined(OPLUS_FEATURE_MEMORY_ISOLATE) && defined(CONFIG_OPLUS_MEMORY_ISOLATE)
 #include <linux/memory_isolate.h>
 #endif /*OPLUS_FEATURE_MEMORY_ISOLATE*/
@@ -4829,11 +4823,6 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
 	unsigned int cpuset_mems_cookie;
 	unsigned int zonelist_iter_cookie;
 	int reserve_flags;
-#ifdef OPLUS_FEATURE_HEALTHINFO
-#ifdef CONFIG_OPLUS_MEM_MONITOR
-	unsigned long oplus_alloc_start = jiffies;
-#endif
-#endif /* OPLUS_FEATURE_HEALTHINFO */
 	/*
 	 * We also sanity check to catch abuse of atomic reserves being used by
 	 * callers that are not in atomic context.
@@ -5086,12 +5075,6 @@ fail:
 	warn_alloc(gfp_mask, ac->nodemask,
 			"page allocation failure: order:%u", order);
 got_pg:
-#ifdef OPLUS_FEATURE_HEALTHINFO
-#ifdef CONFIG_OPLUS_MEM_MONITOR
-	memory_alloc_monitor(gfp_mask, order, jiffies_to_msecs(jiffies - oplus_alloc_start));
-	trace_android_vh_alloc_pages_slowpath(gfp_mask, order, oplus_alloc_start);
-#endif
-#endif /* OPLUS_FEATURE_HEALTHINFO */
 	return page;
 }
 

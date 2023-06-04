@@ -17,12 +17,6 @@
 #include <linux/quotaops.h>
 #include <linux/backing-dev.h>
 #include "internal.h"
-#ifdef OPLUS_FEATURE_HEALTHINFO
-// Add for get cpu load
-#ifdef CONFIG_OPLUS_HEALTHINFO
-#include <soc/oplus/healthinfo.h>
-#endif
-#endif /* OPLUS_FEATURE_HEALTHINFO */
 #if defined(OPLUS_FEATURE_IOMONITOR) && defined(CONFIG_IOMONITOR)
 #include <linux/iomonitor/iomonitor.h>
 #include <linux/iomonitor/iotrace.h>
@@ -229,12 +223,6 @@ static int do_fsync(unsigned int fd, int datasync)
 {
 	struct fd f = fdget(fd);
 	int ret = -EBADF;
-#ifdef OPLUS_FEATURE_HEALTHINFO
-// Add for record  fsync  time
-#ifdef CONFIG_OPLUS_HEALTHINFO
-    unsigned long fsync_time = jiffies;
-#endif
-#endif /* OPLUS_FEATURE_HEALTHINFO */
 	if (f.file) {
 		ret = vfs_fsync(f.file, datasync);
 		fdput(f);
@@ -244,12 +232,6 @@ static int do_fsync(unsigned int fd, int datasync)
 #endif /*OPLUS_FEATURE_IOMONITOR & CONFIG_OPLUS_HEALTHINFO*/
 		inc_syscfs(current);
 	}
-#ifdef OPLUS_FEATURE_HEALTHINFO
-// Add for record  fsync  time
-#ifdef CONFIG_OPLUS_HEALTHINFO
-	ohm_schedstats_record(OHM_SCHED_FSYNC, current, jiffies_to_msecs(jiffies - fsync_time));
-#endif
-#endif /* OPLUS_FEATURE_HEALTHINFO */
 	return ret;
 }
 

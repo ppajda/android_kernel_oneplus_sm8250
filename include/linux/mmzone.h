@@ -175,9 +175,6 @@ enum zone_stat_item {
  */
 	NR_FREE_OPLUS2_PAGES,
 #endif /* OPLUS_FEATURE_MEMORY_ISOLATE */
-#ifdef OPLUS_FEATURE_HEALTHINFO
-        NR_IONCACHE_PAGES,
-#endif /* OPLUS_FEATURE_HEALTHINFO */
 	NR_VM_ZONE_STAT_ITEMS };
 
 enum node_stat_item {

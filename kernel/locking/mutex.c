@@ -1058,21 +1058,7 @@ __mutex_lock_common(struct mutex *lock, long state, unsigned int subclass,
 		}
 #endif /* OPLUS_FEATURE_SCHED_ASSIST */
 		spin_unlock(&lock->wait_lock);
-#ifdef OPLUS_FEATURE_HEALTHINFO
-#ifdef CONFIG_OPLUS_JANK_INFO
-		if (state & TASK_UNINTERRUPTIBLE) {
-			current->in_mutex = 1;
-		}
-#endif
-#endif /* OPLUS_FEATURE_HEALTHINFO */
 		schedule_preempt_disabled();
-#ifdef OPLUS_FEATURE_HEALTHINFO
-#ifdef CONFIG_OPLUS_JANK_INFO
-		if (state & TASK_UNINTERRUPTIBLE) {
-			current->in_mutex = 0;
-		}
-#endif
-#endif /* OPLUS_FEATURE_HEALTHINFO */
 
 		first = __mutex_waiter_is_first(lock, &waiter);
 		if (first)

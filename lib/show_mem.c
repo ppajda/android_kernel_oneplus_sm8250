@@ -9,10 +9,6 @@
 #include <linux/quicklist.h>
 #include <linux/cma.h>
 
-#ifdef OPLUS_FEATURE_HEALTHINFO
-#include <linux/healthinfo/ion.h>
-#endif /* OPLUS_FEATURE_HEALTHINFO */
-
 void show_mem(unsigned int filter, nodemask_t *nodemask)
 {
 	pg_data_t *pgdat;

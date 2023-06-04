@@ -112,10 +112,6 @@ obj-$(CONFIG_MEMFD_CREATE) += memfd.o
 obj-$(CONFIG_PROCESS_RECLAIM)	+= process_reclaim.o
 obj-$(CONFIG_DAMON) += damon/
 
-#ifdef OPLUS_FEATURE_HEALTHINFO
-obj-y += healthinfo/
-#endif /* OPLUS_FEATURE_HEALTHINFO */
-
 #ifdef OPLUS_FEATURE_MEMORY_ISOLATE
 obj-$(CONFIG_OPLUS_MEMORY_ISOLATE) += memory_isolate/
 #endif /*OPLUS_FEATURE_MEMORY_ISOLATE*/

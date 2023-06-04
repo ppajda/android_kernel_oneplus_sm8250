@@ -1145,9 +1145,6 @@ const char * const vmstat_text[] = {
 #if defined(OPLUS_FEATURE_MEMORY_ISOLATE) && defined(CONFIG_OPLUS_MEMORY_ISOLATE)
 	"nr_free_oplus2",
 #endif /*OPLUS_FEATURE_MEMORY_ISOLATE*/
-#ifdef OPLUS_FEATURE_HEALTHINFO
-        "nr_ioncache_pages",
-#endif /* OPLUS_FEATURE_HEALTHINFO */
 
 	/* enum numa_stat_item counters */
 #ifdef CONFIG_NUMA
