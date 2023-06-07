@@ -1,9 +1,14 @@
-#
-# Makefile for the netfilter modules on top of IPv4.
-#
-KBUILD_OPTIONS += CONFIG_OPLUS_FEATURE_DATA_MODULE=m
+obj-$(CONFIG_OPLUS_FEATURE_DATA_MODULE) += oplus_data_module.o
 
-KERNEL_SRC ?= /lib/modules/$(shell uname -r)/build
-M ?= $(shell pwd)
-modules modules_install clean:
-	$(MAKE) -C $(KERNEL_SRC) M=$(M) $(KBUILD_OPTIONS) $(@)
+ccflags-y += -Wall -Werror
+
+oplus_data_module-objs := data_main.o \
+			comm_netlink/comm_netlink.o \
+			comm_netlink/protobuf-c.o \
+			proto-src/netlink_msg.pb-c.o \
+			dpi/dpi_core.o \
+			dpi/log_stream.o\
+			dpi/tmgp_sgame.o \
+			dpi/heytap_market.o \
+			cls_dpi/cls_dpi.o \
+			tmgp_sgame/wzry_stats.o
