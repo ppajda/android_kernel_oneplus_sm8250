@@ -19,9 +19,6 @@
 #include <linux/workqueue.h>
 #include <linux/kthread.h>
 #include <linux/sched/clock.h>
-#if defined(CONFIG_OPLUS_FEATURE_FEEDBACK) || defined(CONFIG_OPLUS_FEATURE_FEEDBACK_MODULE)
-#include <soc/oplus/system/kernel_fb.h>
-#endif
 #include "haptic_feedback.h"
 
 static struct oplus_haptic_track *g_haptic_track_chip;
@@ -355,9 +352,6 @@ static void oplus_haptic_track_upload_info_dwork(struct work_struct *work)
 	if ((!chip) || (!chip->dcs_info))
 		return;
 
-#if defined(CONFIG_OPLUS_FEATURE_FEEDBACK) || defined(CONFIG_OPLUS_FEATURE_FEEDBACK_MODULE)
-	ret = fb_kevent_send_to_user(chip->dcs_info);
-#endif
 	if (!ret) {
 		complete(&chip->trigger_ack);
 	} else if (chip->fb_retry_cnt > 0) {

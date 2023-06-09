@@ -20,6 +20,7 @@
 #include <linux/sched/clock.h>
 #include <soc/oplus/system/boot_mode.h>
 
+<<<<<<< HEAD:drivers/power/oplus/v2/monitor/oplus_chg_track.c
 #if defined(CONFIG_OPLUS_FEATURE_FEEDBACK) ||	\
 	defined(CONFIG_OPLUS_FEATURE_FEEDBACK_MODULE)
 #include <soc/oplus/system/kernel_fb.h>
@@ -27,6 +28,8 @@
 #include <linux/oplus_kevent.h>
 #endif
 
+=======
+>>>>>>> cfe5530aedaa (treewide: Clean up oplus feedback):oplus/kernel/charger/v2/monitor/oplus_chg_track.c
 #include <oplus_chg.h>
 #include <oplus_chg_module.h>
 #include <oplus_mms_gauge.h>
@@ -389,11 +392,14 @@ struct oplus_chg_track {
 	wait_queue_head_t upload_wq;
 
 	struct workqueue_struct *trigger_upload_wq;
+<<<<<<< HEAD:drivers/power/oplus/v2/monitor/oplus_chg_track.c
 #if defined(CONFIG_OPLUS_FEATURE_FEEDBACK) || \
 	defined(CONFIG_OPLUS_FEATURE_FEEDBACK_MODULE) || \
 	defined(CONFIG_OPLUS_KEVENT_UPLOAD)
 	struct kernel_packet_info *dcs_info;
 #endif
+=======
+>>>>>>> cfe5530aedaa (treewide: Clean up oplus feedback):oplus/kernel/charger/v2/monitor/oplus_chg_track.c
 	struct delayed_work upload_info_dwork;
 	struct mutex dcs_info_lock;
 	int dwork_retry_cnt;
@@ -456,11 +462,14 @@ static struct oplus_chg_track *g_track_chip;
 static struct dentry *track_debugfs_root;
 static DEFINE_MUTEX(debugfs_root_mutex);
 
+<<<<<<< HEAD:drivers/power/oplus/v2/monitor/oplus_chg_track.c
 #if defined(CONFIG_OPLUS_FEATURE_FEEDBACK) || \
 	defined(CONFIG_OPLUS_FEATURE_FEEDBACK_MODULE) || \
 	defined(CONFIG_OPLUS_KEVENT_UPLOAD)
 static int oplus_chg_track_pack_dcs_info(struct oplus_chg_track *chip);
 #endif
+=======
+>>>>>>> cfe5530aedaa (treewide: Clean up oplus feedback):oplus/kernel/charger/v2/monitor/oplus_chg_track.c
 static int
 oplus_chg_track_get_charger_type(struct oplus_monitor *monitor,
 				 struct oplus_chg_track_status *track_status,
@@ -469,6 +478,7 @@ static int oplus_chg_track_obtain_wls_break_sub_crux_info(
 	struct oplus_chg_track *track_chip, char *crux_info);
 static int oplus_chg_track_upload_trigger_data(oplus_chg_track_trigger data);
 
+<<<<<<< HEAD:drivers/power/oplus/v2/monitor/oplus_chg_track.c
 #if defined(CONFIG_OPLUS_FEATURE_FEEDBACK) || \
 	defined(CONFIG_OPLUS_FEATURE_FEEDBACK_MODULE) || \
 	defined(CONFIG_OPLUS_KEVENT_UPLOAD)
@@ -522,6 +532,8 @@ static struct flag_reason_table track_flag_reason_table[] = {
 };
 #endif
 
+=======
+>>>>>>> cfe5530aedaa (treewide: Clean up oplus feedback):oplus/kernel/charger/v2/monitor/oplus_chg_track.c
 static struct oplus_chg_track_type wired_type_table[] = {
 	{ OPLUS_CHG_USB_TYPE_UNKNOWN, TRACK_POWER_2500MW, "unknow" },
 	{ OPLUS_CHG_USB_TYPE_SDP, TRACK_POWER_2500MW, "sdp" },
@@ -1850,6 +1862,7 @@ static int oplus_chg_track_init(struct oplus_chg_track *track_dev)
 	return ret;
 }
 
+<<<<<<< HEAD:drivers/power/oplus/v2/monitor/oplus_chg_track.c
 #if defined(CONFIG_OPLUS_FEATURE_FEEDBACK) || \
 	defined(CONFIG_OPLUS_FEATURE_FEEDBACK_MODULE) || \
 	defined(CONFIG_OPLUS_KEVENT_UPLOAD)
@@ -1884,6 +1897,8 @@ static int oplus_chg_track_get_flag_tag(int flag_reason, char *flag_reason_tag)
 }
 #endif
 
+=======
+>>>>>>> cfe5530aedaa (treewide: Clean up oplus feedback):oplus/kernel/charger/v2/monitor/oplus_chg_track.c
 static bool
 oplus_chg_track_trigger_data_is_valid(oplus_chg_track_trigger *pdata)
 {
@@ -2032,11 +2047,14 @@ static int oplus_chg_track_thread(void *data)
 			chg_err("oplus chg false wakeup, rc=%d\n", rc);
 		mutex_lock(&chip->trigger_data_lock);
 		chip->trigger_data_ok = false;
+<<<<<<< HEAD:drivers/power/oplus/v2/monitor/oplus_chg_track.c
 #if defined(CONFIG_OPLUS_FEATURE_FEEDBACK) || \
 	defined(CONFIG_OPLUS_FEATURE_FEEDBACK_MODULE) || \
 	defined(CONFIG_OPLUS_KEVENT_UPLOAD)
 		oplus_chg_track_pack_dcs_info(chip);
 #endif
+=======
+>>>>>>> cfe5530aedaa (treewide: Clean up oplus feedback):oplus/kernel/charger/v2/monitor/oplus_chg_track.c
 		chip->dwork_retry_cnt = OPLUS_CHG_TRACK_DWORK_RETRY_CNT;
 		queue_delayed_work(chip->trigger_upload_wq,
 				   &chip->upload_info_dwork, 0);
@@ -2089,6 +2107,7 @@ static int oplus_chg_track_get_local_time_s(void)
 */
 #define TRACK_VERSION	"3.1"
 
+<<<<<<< HEAD:drivers/power/oplus/v2/monitor/oplus_chg_track.c
 #if defined(CONFIG_OPLUS_FEATURE_FEEDBACK) || \
 	defined(CONFIG_OPLUS_FEATURE_FEEDBACK_MODULE) || \
 	defined(CONFIG_OPLUS_KEVENT_UPLOAD)
@@ -2147,6 +2166,8 @@ static int oplus_chg_track_pack_dcs_info(struct oplus_chg_track *chip)
 }
 #endif
 
+=======
+>>>>>>> cfe5530aedaa (treewide: Clean up oplus feedback):oplus/kernel/charger/v2/monitor/oplus_chg_track.c
 static void oplus_chg_track_upload_info_dwork(struct work_struct *work)
 {
 	int ret = 0;
@@ -2157,6 +2178,7 @@ static void oplus_chg_track_upload_info_dwork(struct work_struct *work)
 	if (!chip)
 		return;
 
+<<<<<<< HEAD:drivers/power/oplus/v2/monitor/oplus_chg_track.c
 	mutex_lock(&chip->dcs_info_lock);
 #if defined(CONFIG_OPLUS_FEATURE_FEEDBACK) ||	\
 	defined(CONFIG_OPLUS_FEATURE_FEEDBACK_MODULE)
@@ -2165,6 +2187,8 @@ static void oplus_chg_track_upload_info_dwork(struct work_struct *work)
 	ret = kevent_send_to_user(chip->dcs_info);
 #endif
 	mutex_unlock(&chip->dcs_info_lock);
+=======
+>>>>>>> cfe5530aedaa (treewide: Clean up oplus feedback):oplus/kernel/charger/v2/monitor/oplus_chg_track.c
 	if (!ret)
 		complete(&chip->trigger_ack);
 	else if (chip->dwork_retry_cnt > 0)
@@ -4527,6 +4551,7 @@ int oplus_chg_track_driver_init(struct oplus_monitor *monitor)
 	}
 	monitor->track = track_dev;
 	track_dev->monitor = monitor;
+<<<<<<< HEAD:drivers/power/oplus/v2/monitor/oplus_chg_track.c
 
 #if defined(CONFIG_OPLUS_FEATURE_FEEDBACK) || \
 	defined(CONFIG_OPLUS_FEATURE_FEEDBACK_MODULE) || \
@@ -4538,6 +4563,8 @@ int oplus_chg_track_driver_init(struct oplus_monitor *monitor)
 		goto dcs_info_kmalloc_fail;
 	}
 #endif
+=======
+>>>>>>> cfe5530aedaa (treewide: Clean up oplus feedback):oplus/kernel/charger/v2/monitor/oplus_chg_track.c
 	track_dev->dev = monitor->dev;
 
 	rc = oplus_chg_track_debugfs_init(track_dev);
@@ -4580,12 +4607,15 @@ parse_dt_err:
 	if (track_debugfs_root)
 		debugfs_remove_recursive(track_debugfs_root);
 debugfs_create_fail:
+<<<<<<< HEAD:drivers/power/oplus/v2/monitor/oplus_chg_track.c
 #if defined(CONFIG_OPLUS_FEATURE_FEEDBACK) || \
 	defined(CONFIG_OPLUS_FEATURE_FEEDBACK_MODULE) || \
 	defined(CONFIG_OPLUS_KEVENT_UPLOAD)
 	kfree(track_dev->dcs_info);
 dcs_info_kmalloc_fail:
 #endif
+=======
+>>>>>>> cfe5530aedaa (treewide: Clean up oplus feedback):oplus/kernel/charger/v2/monitor/oplus_chg_track.c
 	devm_kfree(monitor->dev, track_dev);
 	monitor->track = NULL;
 	return rc;
@@ -4610,11 +4640,15 @@ int oplus_chg_track_driver_exit(struct oplus_monitor *monitor)
 
 	if (track_debugfs_root)
 		debugfs_remove_recursive(track_debugfs_root);
+<<<<<<< HEAD:drivers/power/oplus/v2/monitor/oplus_chg_track.c
 #if defined(CONFIG_OPLUS_FEATURE_FEEDBACK) || \
 	defined(CONFIG_OPLUS_FEATURE_FEEDBACK_MODULE) || \
 	defined(CONFIG_OPLUS_KEVENT_UPLOAD)
 	kfree(track_dev->dcs_info);
 #endif
+=======
+
+>>>>>>> cfe5530aedaa (treewide: Clean up oplus feedback):oplus/kernel/charger/v2/monitor/oplus_chg_track.c
 	devm_kfree(monitor->dev, track_dev);
 	return 0;
 }
