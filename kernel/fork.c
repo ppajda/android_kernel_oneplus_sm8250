@@ -112,9 +112,6 @@
 #ifdef OPLUS_FEATURE_SCHED_ASSIST
 #include <linux/sched_assist/sched_assist_fork.h>
 #endif /* OPLUS_FEATURE_SCHED_ASSIST */
-#ifdef CONFIG_OPLUS_FEATURE_IM
-#include <linux/im/im.h>
-#endif
 
 #ifdef CONFIG_OPLUS_FEATURE_INPUT_BOOST_V4
 #include <linux/tuning/frame_init.h>
@@ -2306,9 +2303,6 @@ static __latent_entropy struct task_struct *copy_process(
 	uprobe_copy_process(p, clone_flags);
 	copy_oom_score_adj(clone_flags, p);
 	if (!IS_ERR(p)) {
-#ifdef CONFIG_OPLUS_FEATURE_IM
-		im_tsk_init_flag((void *) p);
-#endif
 	}
 
 #ifdef CONFIG_OPLUS_FEATURE_UID_PERF

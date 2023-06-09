@@ -1599,9 +1599,6 @@ struct task_struct {
 	struct task_record record[OPLUS_NR_CPUS];	/* 2*u64 */
 #endif
 
-#ifdef CONFIG_OPLUS_FEATURE_IM
-	int im_flag;
-#endif
 
 #ifdef CONFIG_OPLUS_FEATURE_INPUT_BOOST_V4
 	struct frame_boost_group *fbg;
