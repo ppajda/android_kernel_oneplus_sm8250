@@ -883,10 +883,6 @@ static void update_tg_load_avg(struct cfs_rq *cfs_rq, int force)
 }
 #endif /* CONFIG_SMP */
 
-#ifdef CONFIG_OPLUS_FEATURE_TPP
-#include <linux/tpp/tpp.h>
-#endif /* CONFIG_OPLUS_FEATURE_TPP */
-
 /*
  * Update the current task's runtime statistics.
  */
@@ -5786,9 +5782,6 @@ enqueue_task_fair(struct rq *rq, struct task_struct *p, int flags)
 	assert_list_leaf_cfs_rq(rq);
 
 	hrtick_update(rq);
-#ifdef CONFIG_OPLUS_FEATURE_TPP
-	tpp_enqueue(cpu_of(rq), p);
-#endif /* CONFIG_OPLUS_FEATURE_TPP */
 }
 
 static void set_next_buddy(struct sched_entity *se);
@@ -5880,9 +5873,6 @@ static void dequeue_task_fair(struct rq *rq, struct task_struct *p, int flags)
 
 	util_est_dequeue(&rq->cfs, p, task_sleep);
 	hrtick_update(rq);
-#ifdef CONFIG_OPLUS_FEATURE_TPP
-	tpp_dequeue(cpu_of(rq), p);
-#endif /* CONFIG_OPLUS_FEATURE_TPP */
 }
 
 #ifdef CONFIG_SMP
@@ -7327,11 +7317,6 @@ static void find_best_target(struct sched_domain *sd, cpumask_t *cpus,
 	sg = start_sd->groups;
 
 	cpumask_copy(&new_allowed_cpus, &p->cpus_allowed);
-#ifdef CONFIG_OPLUS_FEATURE_TPP
-	if (tpp_task(p)) {
-		cpumask_setall(&new_allowed_cpus);
-	}
-#endif /* CONFIG_OPLUS_FEATURE_TPP */
 	do {
 		for_each_cpu_and(i, &new_allowed_cpus, sched_group_span(sg)) {
 			unsigned long capacity_curr = capacity_curr_of(i);
@@ -8347,11 +8332,6 @@ oplus_done:
 		find_ux_task_cpu(p, &best_energy_cpu);
 	}
 #endif /* OPLUS_FEATURE_SCHED_ASSIST */
-
-#ifdef CONFIG_OPLUS_FEATURE_TPP
-	if (tpp_task(p))
-		tpp_find_cpu(&best_energy_cpu, p);
-#endif /* CONFIG_OPLUS_FEATURE_TPP */
 
 done:
 #ifdef CONFIG_OPLUS_FEATURE_INPUT_BOOST_V4
