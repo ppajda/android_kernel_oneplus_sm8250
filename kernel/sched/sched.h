@@ -3254,4 +3254,7 @@ struct sched_avg_stats {
 };
 extern void sched_get_nr_running_avg(struct sched_avg_stats *stats);
 
+#ifdef CONFIG_OPLUS_CPU_AUDIO_PERF
+extern struct task_struct *pick_highest_pushable_task(struct rq *rq, int cpu);
+#endif
 #endif // __KERNEL_SCHED_H__
