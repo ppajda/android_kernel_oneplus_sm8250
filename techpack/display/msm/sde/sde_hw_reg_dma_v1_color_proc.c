@@ -3890,3 +3890,4 @@ void reg_dmav1_setup_ltm_vlutv1(struct sde_hw_dspp *ctx, void *cfg)
 		return;
 	}
 }
+

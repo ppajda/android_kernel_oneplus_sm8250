@@ -184,6 +184,8 @@ struct sensor_fb_conf g_fb_conf[] = {
 	{DOUBLE_TAP_PREVENTED_BY_FREEFALL_Z_ID, "device_double_prevented_by_freefall_z", SENSOR_DEBUG_DEVICE_TYPE},
 	{DOUBLE_TAP_PREVENTED_BY_FREEFALL_SLOPE_ID, "device_double_prevented_by_freefall_slope", SENSOR_DEBUG_DEVICE_TYPE},
 
+	{BAROMETER_I2C_ERR_ID, "device_bar_i2c_err", SENSOR_DEVICE_TYPE},
+
 	{ALAILABLE_SENSOR_LIST_ID, "available_sensor_list", SENSOR_DEBUG_DEVICE_TYPE},
 
 	{HAL_SENSOR_NOT_FOUND, "device_hal_not_found", SENSOR_DEVICE_TYPE},
@@ -418,7 +420,7 @@ static ssize_t hal_info_store(struct device *dev,
 
 	pr_info("hal_info_store\n");
 
-	err = sscanf(buf, "%u %u %31s", &event_id, &event_ct, strbuf);
+	err = sscanf(buf, "%hu %hu %31s", &event_id, &event_ct, strbuf);
 	if (err < 0) {
 		pr_err("hal_info_store error: err = %d\n", err);
 		return count;

@@ -198,7 +198,7 @@ static int sc8517_read_i2c_block(struct i2c_client *client, u8 reg, u8 length, u
 		chg_err("read err, rc = %d,\n", rc);
 	}
 	mutex_unlock(&i2c_rw_lock);
-	return 0;
+	return rc;
 }
 
 static int sc8517_set_predata(struct oplus_voocphy_manager *chip, u16 val)
@@ -427,7 +427,10 @@ static u8 sc8517_get_int_value(struct oplus_voocphy_manager *chip)
 	if (ret < 0) {
 		sc8517_i2c_error(true);
 		chg_err(" read SC8517_REG_09 6 bytes failed\n");
-		return -1;
+		memset(chip->int_column, 0, sizeof(chip->int_column));
+		/* set int_column[1]=1, otherwise the dcdc chg can't be enabled*/
+		chip->int_column[1] = BIT(0);
+		return chip->int_column[1];
 	}
 	memcpy(chip->int_column, int_column, sizeof(chip->int_column));
 	chg_err("SC8517_REG_09 -->09~0E[0x%02x 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x]\n", chip->int_column[0], chip->int_column[1], chip->int_column[2], chip->int_column[3], chip->int_column[4], chip->int_column[5]);

@@ -82,6 +82,9 @@ static struct haptic_fb_info g_haptic_fb_table[] = {
 	{HAPTIC_OSC_CALI_TRACK, "osc_cali_err", HAPTIC_TRACK_EVENT_FRE_CALI_ERR},
 
 	{HAPTIC_MEM_ALLOC_TRACK, "mem_alloc_err", HAPTIC_TRACK_EVENT_MEM_ALLOC_ERR},
+
+	{HAPTIC_SPMI_READ_TRACK_ERR, "spmi_read_err", HAPTIC_TRACK_EVENT_DEVICE_ERR},
+	{HAPTIC_SPMI_WRITE_TRACK_ERR, "spmi_write_err", HAPTIC_TRACK_EVENT_DEVICE_ERR},
 };
 
 static int oplus_haptic_event_payload_pack(struct haptic_fb_detail *fb_info)

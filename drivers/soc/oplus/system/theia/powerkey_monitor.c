@@ -22,6 +22,7 @@ static const int stage_brief_size = 64;
 static struct task_struct *block_thread = NULL;
 static bool timer_started = false;
 static int systemserver_pid = -1;
+static bool g_system_boot_completed = false;
 
 int get_systemserver_pid(void)
 {
@@ -107,12 +108,22 @@ static bool handle_param_setup(char *key, char *value)
         int s_pid;
         if (sscanf(value, "%d", &s_pid) == 1) {
             systemserver_pid = s_pid;
-        }
+	}
+	} else if (!strcmp(key, "boot-completed")) {
+		int is_boot_completed;
+		if (sscanf(value, "%d", &is_boot_completed) == 1) {
+			g_system_boot_completed = !!is_boot_completed;
+		}
     } else {
         ret = false;
     }
 
     return ret;
+}
+
+bool is_system_boot_completed(void)
+{
+	return g_system_boot_completed;
 }
 
 /*
@@ -141,7 +152,8 @@ static ssize_t powerkey_monitor_param_proc_write(struct file *file, const char _
 
     POWER_MONITOR_DEBUG_PRINTK("%s: buffer:%s\n", __func__, buffer);
 
-    while ((param = strsep(&pBuffer, ";"))) {
+    param = strsep(&pBuffer, ";");
+    while (param) {
         char key[64] = {0}, value[64] = {0};
         ret = sscanf(param, "%s %s", key, value);
         POWER_MONITOR_DEBUG_PRINTK("%s: param:%s ret:%d key:%s value:%s\n", __func__, param, ret, key, value);
@@ -150,6 +162,7 @@ static ssize_t powerkey_monitor_param_proc_write(struct file *file, const char _
                 POWER_MONITOR_DEBUG_PRINTK("%s: setup param fail! key:%s, value:%s\n", __func__, key, value);
             }
         }
+        param = strsep(&pBuffer, ";");
     }
 
     return count;

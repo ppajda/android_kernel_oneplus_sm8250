@@ -15,8 +15,10 @@
 #define WLCHG_FTM_TEST_CP2_ERR BIT(2)
 
 #define WLCHG_TASK_INTERVAL round_jiffies_relative(msecs_to_jiffies(500))
-#define WLCHG_BATINFO_UPDATE_INTERVAL round_jiffies_relative(msecs_to_jiffies(1000))
-#define WLCHG_PD_HARDRESET_WAIT_TIME round_jiffies_relative(msecs_to_jiffies(1000))
+#define WLCHG_BATINFO_UPDATE_INTERVAL                                          \
+	round_jiffies_relative(msecs_to_jiffies(1000))
+#define WLCHG_PD_HARDRESET_WAIT_TIME                                           \
+	round_jiffies_relative(msecs_to_jiffies(1000))
 #define WLCHG_DISCONNECT_DELAYED msecs_to_jiffies(1500)
 #define WLCHG_ACTIVE_DISCONNECT_DELAYED msecs_to_jiffies(5000)
 
@@ -64,7 +66,8 @@
 #define WPC_CHARGE_VOLTAGE_OVP_MIN 12000
 #define WPC_CHARGE_VOLTAGE_FTM 17380
 #define WPC_CHARGE_VOLTAGE_FASTCHG WPC_CHARGE_VOLTAGE_DEFAULT // 12000
-#define WPC_CHARGE_VOLTAGE_FASTCHG_MAX (WPC_CHARGE_VOLTAGE_DEFAULT + 100) // 15000
+#define WPC_CHARGE_VOLTAGE_FASTCHG_MAX                                         \
+	(WPC_CHARGE_VOLTAGE_DEFAULT + 100) // 15000
 #define WPC_CHARGE_VOLTAGE_EPP 9000
 
 #define WPC_CHARGE_VOLTAGE_CHGPUMP_MAX 20100
@@ -100,19 +103,19 @@
 #define WPC_ADJUST_CV_DELAY 10
 #define WPC_CEP_NONZERO_DELAY 1
 
-#define NORMAL_MODE_VOL_MIN         WPC_CHARGE_VOLTAGE_DEFAULT
-#define FASTCHG_MODE_VOL_MIN        WPC_CHARGE_VOLTAGE_EPP
-#define RX_VOLTAGE_MAX              20000
-#define FASTCHG_CURR_30W_MAX_UA     1500000
-#define FASTCHG_CURR_20W_MAX_UA     1000000
-#define FASTCHG_CURR_15W_MAX_UA     800000
-#define FASTCHG_CURR_MIN_UA         600000
-#define BATT_HOT_DECIDEGREE_MAX     600
+#define NORMAL_MODE_VOL_MIN WPC_CHARGE_VOLTAGE_DEFAULT
+#define FASTCHG_MODE_VOL_MIN WPC_CHARGE_VOLTAGE_EPP
+#define RX_VOLTAGE_MAX 20000
+#define FASTCHG_CURR_30W_MAX_UA 1500000
+#define FASTCHG_CURR_20W_MAX_UA 1000000
+#define FASTCHG_CURR_15W_MAX_UA 800000
+#define FASTCHG_CURR_MIN_UA 600000
+#define BATT_HOT_DECIDEGREE_MAX 600
 #define FASTCHG_EXIT_DECIDEGREE_MAX 450
 #define FASTCHG_EXIT_DECIDEGREE_MIN 0
-#define FASTCHG_EXIT_VOL_MAX_UV     4350000
+#define FASTCHG_EXIT_VOL_MAX_UV 4350000
 
-#define RX_EPP_SOFT_OVP_MV  14000
+#define RX_EPP_SOFT_OVP_MV 14000
 #define RX_FAST_SOFT_OVP_MV 22000
 
 #define CURR_ERR_MIN 50
@@ -126,7 +129,7 @@
 #define ADAPTER_TYPE_UNKNOWN 0
 #define ADAPTER_TYPE_FASTCHAGE_DASH 1
 #define ADAPTER_TYPE_FASTCHAGE_WARP 2
-#define ADAPTER_TYPE_FASTCHAGE_PD_65W	7
+#define ADAPTER_TYPE_FASTCHAGE_PD_65W 7
 #define ADAPTER_TYPE_USB 3
 #define ADAPTER_TYPE_NORMAL_CHARGE 4
 #define ADAPTER_TYPE_EPP 5
@@ -147,10 +150,10 @@
 #define CHARGE_FULL_FAN_THREOD_HI 380
 
 #define FASTCHG_CURR_ERR_MAX 5
-#define WPC_ADAPTER_TYPE_MASK		0x07
-#define WPC_ADAPTER_ID_MASK	0xF8
-#define WPC_RESPONE_ADAPTER_TYPE	0xF1
-#define WPC_RESPONE_INTO_FASTCHAGE	0xF2
+#define WPC_ADAPTER_TYPE_MASK 0x07
+#define WPC_ADAPTER_ID_MASK 0xF8
+#define WPC_RESPONE_ADAPTER_TYPE 0xF1
+#define WPC_RESPONE_INTO_FASTCHAGE 0xF2
 
 enum WLCHG_MSG_TYPE {
 	WLCHG_MSG_CHG_INFO,
@@ -348,7 +351,6 @@ struct oplus_wpc_chip {
 	struct wpc_data *wpc_chg_data;
 	struct wpc_gpio_ctrl wpc_gpios;
 	struct oplus_wpc_operations *wpc_ops;
-
 };
 
 struct oplus_wpc_operations {
@@ -399,7 +401,6 @@ void oplus_wpc_set_otg_en_val(int value);
 int oplus_wpc_get_otg_en_val(void);
 
 int oplus_wpc_get_idt_en_val(void);
-
 
 void oplus_wpc_set_vbat_en_val(int value);
 
